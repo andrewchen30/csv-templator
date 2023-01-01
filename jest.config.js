@@ -8,7 +8,7 @@ module.exports = {
     },
   },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/(.*)$': '<rootDir>/lib/$1',
   },
   modulePathIgnorePatterns: ['<rootDir>/build/', 'build'],
   setupFilesAfterEnv: ['jest-expect-message'],
