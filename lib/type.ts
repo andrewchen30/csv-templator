@@ -11,8 +11,8 @@ export enum LogicCellType {
 }
 
 export type CellPosition = {
-  rowIndex: number;
-  colIndex: number;
+  row: number;
+  col: number;
 };
 
 export interface BaseCellInfo {

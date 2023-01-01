@@ -16,7 +16,7 @@ export const LogicTypeByCommand: { [command: string]: LogicCellType } =
   Object.entries(LogicCommandByType).reduce(
     (m, [t, c]) => ({
       ...m,
-      [c]: t,
+      [c]: parseInt(t, 10),
     }),
     {},
   );

@@ -30,8 +30,8 @@ function getBaseDataCellInfo(
 
 function getRenderPosition(posInTemplate: CellPosition, offset: CellPosition) {
   return {
-    rowIndex: posInTemplate.rowIndex - offset.rowIndex,
-    colIndex: posInTemplate.colIndex - offset.colIndex,
+    row: posInTemplate.row - offset.row,
+    col: posInTemplate.col - offset.col,
   };
 }
 
@@ -64,6 +64,6 @@ export function parseCellInfo({
   };
 }
 
-export function getErrorWithPos(msg: string, pos: CellPosition) {
-  return new Error(`[${pos.rowIndex}, ${pos.colIndex}] ${msg}`);
+export function getErrorMsgWithPos(msg: string, pos: CellPosition): string {
+  return `[${pos.row}, ${pos.col}] ${msg}`;
 }
