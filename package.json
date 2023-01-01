@@ -1,0 +1,25 @@
+{
+  "name": "csv-templator",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewchen30/csv-templator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrewchen30/csv-templator/issues"
+  },
+  "homepage": "https://github.com/andrewchen30/csv-templator#readme",
+  "devDependencies": {
+    "@types/node": "^12.12.31",
+    "typescript": "^4.9.4"
+  }
+}
