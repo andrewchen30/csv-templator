@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notion Parser should parse a Notion page 1`] = `
+Array [
+  Array [
+    "",
+    "'companyName'",
+    "format(today, 'DD/MM/YYYY')",
+  ],
+  Array [
+    "",
+    "",
+    "orders.foreachCol(po)",
+  ],
+  Array [
+    "",
+    "'Order Number'",
+    "po.orderNumber",
+  ],
+  Array [
+    "",
+    "",
+    "// for-col [sh, i] in po.shipment",
+  ],
+  Array [
+    "",
+    "'Name'",
+    "sh.id",
+  ],
+  Array [
+    "",
+    "'Status'",
+    "shipmentStatusDic[sh.status]",
+  ],
+  Array [
+    "",
+    "'ETA'",
+    "format(sh.eta, 'DD/MM/YYYY')",
+  ],
+  Array [
+    "",
+    "'ETD'",
+    "format(sh.etd, 'DD/MM/YYYY')",
+  ],
+  Array [
+    "",
+    "",
+    "",
+  ],
+  Array [
+    "// for-row (item in allOrderedSkus)",
+    "item.sku",
+    "sh.lineItemBySku[item.sku] ?? '-'",
+  ],
+]
+`;

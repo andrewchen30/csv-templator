@@ -1,27 +1,51 @@
 import { SchemaStyle } from './constants';
 import { SchemaParser, RawTable } from './type';
 
-// Demo:
-// |  | “companyName” | format(today, ‘DD/MM/YYYY’) |
-// | --- | --- | --- |
-// |  |  | users.foreachCol(po) |
-// |  | "User Number” | u.id |
-// |  |  |  |
-// |  | “Name” | sh.name |
 export default class NotionSchemaParser implements SchemaParser {
   shouldUseParser(style: SchemaStyle): boolean {
     return style === SchemaStyle.NOTION;
   }
 
   parse(raw: string): RawTable {
-    const rows = raw.split('\n').filter(Boolean);
+    const rows = raw
+      // replace all special quotation from notion
+      .replace(/(\"|“|”|‘|’)/g, "'")
+      .split('\n')
+      .filter(Boolean)
+      // remove table header structure in notion
+      // | --- | --- | --- |
+      .filter((x) => !this.checkIsHeaderRow(x));
     return rows
       .map((row) =>
         row
           .split('|')
-          .map((str) => str.trim().replace('---', ''))
-          .filter(Boolean),
+          .filter(Boolean)
+
+          // notion table has an extra empty cell at the beginning
+          .slice(1)
+
+          .map((str) => str.trim()),
       )
       .filter((cells) => cells.length >= 1);
+  }
+
+  private checkIsHeaderRow(rawRowStr: string): boolean {
+    const repeatedChars = '| --- '.split('');
+
+    let currentCharIdx = 0;
+
+    for (const char of rawRowStr.trim()) {
+      if (currentCharIdx === repeatedChars.length) {
+        currentCharIdx = 0;
+      }
+
+      if (char !== repeatedChars[currentCharIdx]) {
+        return false;
+      }
+
+      currentCharIdx += 1;
+    }
+
+    return true;
   }
 }

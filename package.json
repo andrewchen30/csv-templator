@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build:tsc": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:watch": "jest --watch -i",
+    "test:all": "jest --coverage --silent -i lib/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,11 @@
   "homepage": "https://github.com/andrewchen30/csv-templator#readme",
   "devDependencies": {
     "@types/node": "^12.12.31",
-    "typescript": "^4.9.4"
+    "@types/jest": "^27.4.0",
+    "typescript": "^4.9.4",
+    "jest": "^27.5.1",
+    "jest-expect-message": "^1.1.2",
+    "jest-matcher-deep-close-to": "^3.0.2",
+    "ts-jest": "^27.1.3"
   }
 }
