@@ -18,7 +18,10 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": false,
-    "baseUrl": "lib"
+    "baseUrl": "lib",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": ["lib/**/*"]
 }
