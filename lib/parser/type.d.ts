@@ -1,12 +1,12 @@
 import { SchemaStyle } from './constants';
 
-type RawCell = string;
-type RawRow = RawCell[];
-type RawTable = RawRow[];
+type RawSchemaCell = string;
+type RawSchemaRow = RawSchemaCell[];
+type RawSchemaTable = RawSchemaRow[];
 
 export interface SchemaParser {
   shouldUseParser: (SchemaStyle: SchemaStyle) => boolean;
-  parse(raw: string): RawTable;
+  parse(raw: string): RawSchemaTable;
 
   // TODO:
   // getDemoTable(data: RawTable): string;
