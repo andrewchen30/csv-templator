@@ -1,4 +1,3 @@
-import { ExtensionType } from '../constants';
 import NotionParser from '../notion';
 
 describe('Notion Parser', () => {

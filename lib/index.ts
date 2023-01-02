@@ -6,15 +6,15 @@ import TableOperator, { initEmptyTable } from './utils/table';
 import { checkIsLogicCell, parseLogicCellSchema } from './parser/logicCell';
 import { parseDataCellSchema } from './parser/dataCell';
 
-export default class CSVTemplator<Data> {
+export default class CSVTemplator<Data = any> {
   _option: Option;
   _rawTemplate: string;
-  _rawTable: RawTable<string>;
+  _rawTable: RawTable;
   _schema: TemplateSchema;
   _logicRowIndexes: Set<number>;
   _logicColIndexes: Set<number>;
 
-  constructor(option: Option) {
+  constructor(option: Option = {}) {
     this._option = formatOption(option);
   }
 
@@ -36,6 +36,8 @@ export default class CSVTemplator<Data> {
     this._schema = schema;
     this._rawTable = rawTable;
     this._rawTemplate = template;
+    this._logicColIndexes = new Set();
+    this._logicRowIndexes = new Set();
   }
 
   private _getExtension() {
@@ -43,12 +45,12 @@ export default class CSVTemplator<Data> {
     return ExtensionByStyle[schemaStyle];
   }
 
-  private _validateRawTable(rawTable: RawTable<string>): boolean {
+  private _validateRawTable(rawTable: RawTable): boolean {
     // TODO: validate rawTable
     return true;
   }
 
-  private _parseTemplateToSchema(rawTable: RawTable<string>): TemplateSchema {
+  private _parseTemplateToSchema(rawTable: RawTable): TemplateSchema {
     const raw = new TableOperator<string>(rawTable);
     const schema = new TableOperator<CellSchema>(
       // empty table

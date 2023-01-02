@@ -1,5 +1,6 @@
+import { RawTable } from '@/type';
 import { ExtensionType } from './constants';
-import { Extension, RawTable } from './type';
+import { Extension } from './type';
 
 export default class NotionExtension implements Extension {
   parse(raw: string): RawTable {

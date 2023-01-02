@@ -1,6 +1,6 @@
 type RawTableCell<C = string> = C;
 type RawTableRow<C> = RawTableCell<C>[];
-export type RawTable<CellType> = RawTableRow<CellType>[];
+export type RawTable<CellType = string> = RawTableRow<CellType>[];
 
 export enum CellType {
   logic,
