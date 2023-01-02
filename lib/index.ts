@@ -24,6 +24,10 @@ export default class CSVTemplator<Data = any> {
   }
 
   public useTemplate(template: string) {
+    // re-initial properties
+    this._logicColIndexes = new Set();
+    this._logicRowIndexes = new Set();
+
     const rawTable = this._getExtension().parse(template);
 
     // validate rawTable, directly throw error if invalid
@@ -36,8 +40,6 @@ export default class CSVTemplator<Data = any> {
     this._schema = schema;
     this._rawTable = rawTable;
     this._rawTemplate = template;
-    this._logicColIndexes = new Set();
-    this._logicRowIndexes = new Set();
   }
 
   private _getExtension() {
