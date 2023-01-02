@@ -1,10 +1,10 @@
 import { CellType, LogicCellType } from '@/type';
-import { GetLogicCellInfoInput, parseLogicCellInfo } from '../logicCell';
+import { GetLogicCellSchemaInput, parseLogicCellSchema } from '../logicCell';
 
 describe('Logic/Parser', () => {
   const successCases: {
     desc: string;
-    input: GetLogicCellInfoInput;
+    input: GetLogicCellSchemaInput;
     expectLogicType: LogicCellType;
     expectExtraOutput: any;
   }[] = [
@@ -37,11 +37,10 @@ describe('Logic/Parser', () => {
       input: {
         raw: '// extend-col',
         pos: { row: 2, col: 2 },
-        parentLogicPos: { row: 0, col: 1 },
       },
       expectLogicType: LogicCellType.extendCol,
       expectExtraOutput: {
-        extendFromLoop: { row: 0, col: 1 },
+        extendFromLoop: { row: 2, col: 1 },
       },
     },
     {
@@ -49,11 +48,10 @@ describe('Logic/Parser', () => {
       input: {
         raw: '// extend-row',
         pos: { row: 2, col: 2 },
-        parentLogicPos: { row: 0, col: 1 },
       },
       expectLogicType: LogicCellType.extendRow,
       expectExtraOutput: {
-        extendFromLoop: { row: 0, col: 1 },
+        extendFromLoop: { row: 1, col: 2 },
       },
     },
   ];
@@ -61,7 +59,7 @@ describe('Logic/Parser', () => {
   it.each(successCases)(
     '$desc',
     ({ input, expectLogicType, expectExtraOutput }) => {
-      const r = parseLogicCellInfo(input);
+      const r = parseLogicCellSchema(input);
 
       expect(r.type).toEqual(CellType.logic);
       expect(r.logicType).toEqual(expectLogicType);
@@ -72,7 +70,7 @@ describe('Logic/Parser', () => {
 
   const errorCases: {
     desc: string;
-    input: GetLogicCellInfoInput;
+    input: GetLogicCellSchemaInput;
     expectErrorMsg: string;
   }[] = [
     {
@@ -82,15 +80,6 @@ describe('Logic/Parser', () => {
         pos: { row: 2, col: 3 },
       },
       expectErrorMsg: '[2, 3] Invalid logic command for-XXX',
-    },
-    {
-      desc: 'Missing parent for-loop in extend command',
-      input: {
-        raw: '// extend-col',
-        pos: { row: 10, col: 10 },
-      },
-      expectErrorMsg:
-        '[10, 10] Command extend must be dependent on a loop command',
     },
     {
       desc: 'Using unknown command',
@@ -103,7 +92,7 @@ describe('Logic/Parser', () => {
   ];
 
   it.each(errorCases)('$desc', ({ input, expectErrorMsg }) => {
-    const call = parseLogicCellInfo.bind(undefined, input);
+    const call = parseLogicCellSchema.bind(undefined, input);
     expect(call).toThrow(expectErrorMsg);
   });
 });

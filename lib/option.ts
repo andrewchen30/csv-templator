@@ -1,11 +1,11 @@
-import { SchemaStyle } from './rawSchemaParser/constants';
+import { ExtensionType } from './extensions/constants';
 
 export type Option = {
-  schemaStyle?: SchemaStyle;
+  schemaStyle?: ExtensionType;
 };
 
 const defaultOption: Option = {
-  schemaStyle: SchemaStyle.NOTION,
+  schemaStyle: ExtensionType.NOTION,
 };
 
 // TODO: validate userInput
