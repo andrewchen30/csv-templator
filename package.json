@@ -6,7 +6,7 @@
   "scripts": {
     "build:tsc": "tsc",
     "test:watch": "jest --watch -i",
-    "test:all": "jest --coverage --silent -i lib/**/*.spec.ts"
+    "test:ci": "jest --coverage --silent -i lib/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
