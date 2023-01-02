@@ -1,0 +1,186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CSV Templator parse schema  should parse data cell (Horizontal) 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "eval": "'aaa'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "eval": "'bbb'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "eval": "'ccc'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema  should parse data cell (Horizontal) 2`] = `Set {}`;
+
+exports[`CSV Templator parse schema  should parse data cell (Horizontal) 3`] = `Set {}`;
+
+exports[`CSV Templator parse schema  should parse data cell (Mixed) 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "eval": "'aaa'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "eval": "'bbb'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "eval": "'ccc'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 1,
+      },
+      "eval": "'ddd'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 1,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "eval": "'eee'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 2,
+      },
+      "eval": "'fff'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 2,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema  should parse data cell (Mixed) 2`] = `Set {}`;
+
+exports[`CSV Templator parse schema  should parse data cell (Mixed) 3`] = `Set {}`;
+
+exports[`CSV Templator parse schema  should parse data cell (Vertical) 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "eval": "'aaa'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "eval": "'bbb'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 2,
+        "row": 0,
+      },
+      "eval": "'ccc'",
+      "renderPosition": Object {
+        "col": 2,
+        "row": 0,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema  should parse data cell (Vertical) 2`] = `Set {}`;
+
+exports[`CSV Templator parse schema  should parse data cell (Vertical) 3`] = `Set {}`;
