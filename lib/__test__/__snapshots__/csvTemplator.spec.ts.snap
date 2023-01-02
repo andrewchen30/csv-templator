@@ -1,0 +1,425 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CSV Templator parse schema should parse data cell (Horizontal): _logicColIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse data cell (Horizontal): _logicRowIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse data cell (Horizontal): _schema 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "eval": "'aaa'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "eval": "'bbb'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "eval": "'ccc'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema should parse data cell (Mixed): _logicColIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse data cell (Mixed): _logicRowIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse data cell (Mixed): _schema 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "eval": "'aaa'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "eval": "'bbb'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "eval": "'ccc'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 1,
+      },
+      "eval": "'ddd'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 1,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "eval": "'eee'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 2,
+      },
+      "eval": "'fff'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 2,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema should parse data cell (Vertical): _logicColIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse data cell (Vertical): _logicRowIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse data cell (Vertical): _schema 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "eval": "'aaa'",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "eval": "'bbb'",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 2,
+        "row": 0,
+      },
+      "eval": "'ccc'",
+      "renderPosition": Object {
+        "col": 2,
+        "row": 0,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema should parse extend-col and extend-row: _logicColIndexes 1`] = `
+Set {
+  0,
+}
+`;
+
+exports[`CSV Templator parse schema should parse extend-col and extend-row: _logicRowIndexes 1`] = `
+Set {
+  0,
+}
+`;
+
+exports[`CSV Templator parse schema should parse extend-col and extend-row: _schema 1`] = `
+Array [
+  Array [
+    null,
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "logicType": 0,
+      "loopArgs": Array [
+        "item",
+      ],
+      "targetArray": "list",
+      "type": 0,
+    },
+  ],
+  Array [
+    null,
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 1,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 1,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    null,
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 2,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 2,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    null,
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 3,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 3,
+      },
+      "type": 1,
+    },
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 4,
+      },
+      "logicType": 1,
+      "loopArgs": Array [
+        "item2",
+      ],
+      "targetArray": "list",
+      "type": 0,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 4,
+      },
+      "eval": "item2[item.name]",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 4,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema should parse for-col: _logicColIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse for-col: _logicRowIndexes 1`] = `
+Set {
+  0,
+}
+`;
+
+exports[`CSV Templator parse schema should parse for-col: _schema 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "logicType": 0,
+      "loopArgs": Array [
+        "item",
+      ],
+      "targetArray": "list",
+      "type": 0,
+    },
+    null,
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 1,
+      },
+      "type": 1,
+    },
+    null,
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 2,
+      },
+      "type": 1,
+    },
+    null,
+  ],
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 3,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 0,
+        "row": 3,
+      },
+      "type": 1,
+    },
+    null,
+  ],
+]
+`;
+
+exports[`CSV Templator parse schema should parse for-row: _logicColIndexes 1`] = `
+Set {
+  0,
+}
+`;
+
+exports[`CSV Templator parse schema should parse for-row: _logicRowIndexes 1`] = `Set {}`;
+
+exports[`CSV Templator parse schema should parse for-row: _schema 1`] = `
+Array [
+  Array [
+    Object {
+      "_positionInTemplate": Object {
+        "col": 0,
+        "row": 0,
+      },
+      "logicType": 1,
+      "loopArgs": Array [
+        "item",
+      ],
+      "targetArray": "list",
+      "type": 0,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 1,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 2,
+        "row": 0,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 2,
+        "row": 0,
+      },
+      "type": 1,
+    },
+    Object {
+      "_positionInTemplate": Object {
+        "col": 3,
+        "row": 0,
+      },
+      "eval": "item.name",
+      "renderPosition": Object {
+        "col": 3,
+        "row": 0,
+      },
+      "type": 1,
+    },
+  ],
+]
+`;
