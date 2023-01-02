@@ -1,11 +1,7 @@
-import { SchemaStyle } from './constants';
-import { SchemaParser, RawTable } from './type';
+import { ExtensionType } from './constants';
+import { Extension, RawTable } from './type';
 
-export default class NotionSchemaParser implements SchemaParser {
-  shouldUseParser(style: SchemaStyle): boolean {
-    return style === SchemaStyle.NOTION;
-  }
-
+export default class NotionExtension implements Extension {
   parse(raw: string): RawTable {
     const rows = raw
       // replace all special quotation from notion

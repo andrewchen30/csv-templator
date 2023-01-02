@@ -1,12 +1,8 @@
-import { SchemaStyle } from '../constants';
+import { ExtensionType } from '../constants';
 import NotionParser from '../notion';
 
 describe('Notion Parser', () => {
   const parser = new NotionParser();
-
-  it('should usion parser', () => {
-    expect(parser.shouldUseParser(SchemaStyle.NOTION)).toBe(true);
-  });
 
   it('should parse a Notion page', async () => {
     const notionTable = `

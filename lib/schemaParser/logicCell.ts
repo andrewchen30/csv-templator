@@ -1,24 +1,22 @@
 import { getErrorMsgWithPos } from '@/utils';
 import { LogicCellCtrl, LogicTypeByCommand } from '@/const';
-import { CellPosition, CellType, LogicCellInfo, LogicCellType } from '@/type';
+import { CellPosition, CellType, LogicCellSchema, LogicCellType } from '@/type';
 
-export function isLogicCell(raw: string): boolean {
+export function checkIsLogicCell(raw: string): boolean {
   return raw.startsWith(LogicCellCtrl.left);
 }
 
-export type GetLogicCellInfoInput = {
+export type GetLogicCellSchemaInput = {
   raw: string;
   pos: CellPosition;
-  parentLogicPos?: CellPosition;
 };
 
-export function parseLogicCellInfo({
+export function parseLogicCellSchema({
   raw,
   pos,
-  parentLogicPos,
-}: GetLogicCellInfoInput): LogicCellInfo {
+}: GetLogicCellSchemaInput): LogicCellSchema {
   // double check
-  if (!isLogicCell(raw)) {
+  if (!checkIsLogicCell(raw)) {
     throw new Error('Invalid logic cell');
   }
 
@@ -53,22 +51,22 @@ export function parseLogicCellInfo({
     // commandArgs: (no args)
     case LogicCellType.extendRow:
     case LogicCellType.extendCol: {
-      if (!parentLogicPos) {
-        throw new Error(
-          getErrorMsgWithPos(
-            'Command extend must be dependent on a loop command',
-            pos,
-          ),
-        );
-      }
-
       return {
         type: CellType.logic,
         logicType:
           logicType === LogicCellType.extendCol
             ? LogicCellType.extendCol
             : LogicCellType.extendRow,
-        extendFromLoop: parentLogicPos,
+        extendFromLoop:
+          logicType === LogicCellType.extendCol
+            ? {
+                row: pos.row,
+                col: pos.col - 1,
+              }
+            : {
+                row: pos.row - 1,
+                col: pos.col,
+              },
         _positionInTemplate: pos,
       };
     }

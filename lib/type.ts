@@ -1,3 +1,7 @@
+type RawTableCell<C = string> = C;
+type RawTableRow<C> = RawTableCell<C>[];
+export type RawTable<CellType> = RawTableRow<CellType>[];
+
 export enum CellType {
   logic,
   data,
@@ -15,21 +19,21 @@ export type CellPosition = {
   col: number;
 };
 
-export interface BaseCellInfo {
+export interface BaseCellSchema {
   _positionInTemplate: CellPosition;
 }
 
-export interface DataCellInfo extends BaseCellInfo {
+export interface DataCellSchema extends BaseCellSchema {
   type: CellType.data;
   eval: string | undefined; // TODO: check is pure text
   renderPosition: CellPosition;
 }
 
-interface BaseLogicCellInfo extends BaseCellInfo {
+interface BaseLogicCellSchema extends BaseCellSchema {
   type: CellType.logic;
 }
 
-export interface ForeachLogicCellInfo extends BaseLogicCellInfo {
+export interface ForeachLogicCellSchema extends BaseLogicCellSchema {
   logicType: LogicCellType.forCol | LogicCellType.forRow;
 
   // {listName}.foreach(({targetArray}) => ...)
@@ -41,13 +45,13 @@ export interface ForeachLogicCellInfo extends BaseLogicCellInfo {
   loopArgs: string[];
 }
 
-export interface ExtendLogicCellInfo extends BaseLogicCellInfo {
+export interface ExtendLogicCellSchema extends BaseLogicCellSchema {
   logicType: LogicCellType.extendCol | LogicCellType.extendRow;
   extendFromLoop: CellPosition;
 }
 
-export type LogicCellInfo = ForeachLogicCellInfo | ExtendLogicCellInfo;
+export type LogicCellSchema = ForeachLogicCellSchema | ExtendLogicCellSchema;
 
-export type CellInfo = LogicCellInfo | DataCellInfo | null;
+export type CellSchema = LogicCellSchema | DataCellSchema | null;
 
-export type TemplateSchema = CellInfo[][];
+export type TemplateSchema = RawTable<CellSchema>;
