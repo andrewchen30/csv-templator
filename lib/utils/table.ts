@@ -39,6 +39,10 @@ export default class TableOperator<CellType> {
     this._rawTable[pos.row][pos.col] = value;
   }
 
+  public getCell(pos: CellPosition): CellType {
+    return this._rawTable[pos.row][pos.col];
+  }
+
   public getRawTable(): RawTable<CellType> {
     return this._rawTable;
   }

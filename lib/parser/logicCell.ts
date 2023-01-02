@@ -57,7 +57,7 @@ export function parseLogicCellSchema({
           logicType === LogicCellType.extendCol
             ? LogicCellType.extendCol
             : LogicCellType.extendRow,
-        extendFromLoop:
+        parentPos:
           logicType === LogicCellType.extendCol
             ? {
                 row: pos.row,

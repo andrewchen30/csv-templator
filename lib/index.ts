@@ -81,6 +81,18 @@ export default class CSVTemplator<Data> {
       } else if (logicCellSchema.logicType === LogicCellType.forCol) {
         this._logicRowIndexes.add(pos.row);
       }
+
+      // validate parent logic cell exists
+      if (
+        logicCellSchema.logicType === LogicCellType.extendCol ||
+        logicCellSchema.logicType === LogicCellType.extendRow
+      ) {
+        const parentCell = schema.getCell(logicCellSchema.parentPos);
+
+        if (!parentCell) {
+          throw new Error("Extend logic cell's parent is not exists");
+        }
+      }
     });
 
     return schema.getRawTable();
