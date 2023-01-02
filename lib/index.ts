@@ -1,18 +1,15 @@
+import { RawTable } from '@/type';
 import ExtensionByStyle from './extensions';
 import { CellSchema, LogicCellType, TemplateSchema } from './type';
-import { RawTable } from './extensions/type';
 import { Option, formatOption } from './option';
 import TableOperator, { initEmptyTable } from './utils/table';
-import {
-  checkIsLogicCell,
-  parseLogicCellSchema,
-} from './schemaParser/logicCell';
-import { parseDataCellSchema } from './schemaParser/dataCell';
+import { checkIsLogicCell, parseLogicCellSchema } from './parser/logicCell';
+import { parseDataCellSchema } from './parser/dataCell';
 
 export default class CSVTemplator<Data> {
   private _option: Option;
   private _rawTemplate: string;
-  private _rawTable: RawTable;
+  private _rawTable: RawTable<string>;
   private _schema: TemplateSchema;
   private _logicRowIndexes: Set<number>;
   private _logicColIndexes: Set<number>;
@@ -46,16 +43,17 @@ export default class CSVTemplator<Data> {
     return ExtensionByStyle[schemaStyle];
   }
 
-  private _validateRawTable(rawTable: RawTable): boolean {
+  private _validateRawTable(rawTable: RawTable<string>): boolean {
     // TODO: validate rawTable
     return true;
   }
 
   private _parseTemplateToSchema(rawTable: RawTable<string>): TemplateSchema {
     const raw = new TableOperator<string>(rawTable);
-    const { row, col } = rawTable.getSize();
-
-    const schema = new TableOperator<CellSchema>(initEmptyTable(row, col));
+    const schema = new TableOperator<CellSchema>(
+      // empty table
+      initEmptyTable(...raw.getSize()),
+    );
 
     raw.foreach((raw, pos) => {
       const cellInfo = {
