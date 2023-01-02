@@ -1,5 +1,5 @@
 import { CellType, LogicCellType } from '@/type';
-import { GetLogicCellInfoInput, parseLogicCellInfo } from '../parser';
+import { GetLogicCellInfoInput, parseLogicCellInfo } from '../logicCell';
 
 describe('Logic/Parser', () => {
   const successCases: {
