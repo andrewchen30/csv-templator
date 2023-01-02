@@ -445,3 +445,204 @@ TableOperator {
   ],
 }
 `;
+
+exports[`CSV Templator prepare render data should successfully prepare data for render: _rawValue 1`] = `
+TableOperator {
+  "_rawTable": Array [
+    Array [
+      null,
+      Object {
+        "data": Object {
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "'name'",
+      },
+      Object {
+        "data": Object {
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "'age'",
+      },
+    ],
+    Array [
+      null,
+      Object {
+        "data": Object {
+          "_index": 0,
+          "user": Object {
+            "age": 30,
+            "name": "Andrew",
+          },
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "user.name",
+      },
+      Object {
+        "data": Object {
+          "_index": 0,
+          "user": Object {
+            "age": 30,
+            "name": "Andrew",
+          },
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "user.age",
+      },
+    ],
+    Array [
+      Object {},
+      Object {
+        "data": Object {
+          "_index": 1,
+          "user": Object {
+            "age": 28,
+            "name": "Joanne",
+          },
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "user.name",
+      },
+      Object {
+        "data": Object {
+          "_index": 1,
+          "user": Object {
+            "age": 28,
+            "name": "Joanne",
+          },
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "user.age",
+      },
+    ],
+    Array [
+      Object {},
+      Object {
+        "data": Object {
+          "_index": 2,
+          "user": Object {
+            "age": 22,
+            "name": "Frank",
+          },
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "user.name",
+      },
+      Object {
+        "data": Object {
+          "_index": 2,
+          "user": Object {
+            "age": 22,
+            "name": "Frank",
+          },
+          "users": Array [
+            Object {
+              "age": 30,
+              "name": "Andrew",
+            },
+            Object {
+              "age": 28,
+              "name": "Joanne",
+            },
+            Object {
+              "age": 22,
+              "name": "Frank",
+            },
+          ],
+        },
+        "eval": "user.age",
+      },
+    ],
+  ],
+}
+`;

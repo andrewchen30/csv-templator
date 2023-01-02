@@ -65,4 +65,35 @@ describe('CSV Templator', () => {
       expect(templator._logicRowIndexes).toMatchSnapshot('_logicRowIndexes');
     });
   });
+
+  describe('prepare render data', () => {
+    const successCases: {
+      desc: string;
+      template: string;
+      data: any;
+    }[] = [
+      {
+        desc: 'should successfully prepare data for render',
+        template: `
+        | | "name" | "age"
+        | // for-row user in users | user.name | user.age |
+      `,
+        data: {
+          users: [
+            { name: 'Andrew', age: 30 },
+            { name: 'Joanne', age: 28 },
+            { name: 'Frank', age: 22 },
+          ],
+        },
+      },
+    ];
+
+    it.each(successCases)('$desc', ({ template, data }) => {
+      const templator = new CSVTemplator();
+      templator.useTemplate(template);
+      templator.render(data);
+
+      expect(templator._rawValue).toMatchSnapshot('_rawValue');
+    });
+  });
 });

@@ -70,26 +70,30 @@ export default class CSVTemplator<Data = any> {
         return;
       }
 
-      const { targetArray, loopArgs } = baseForRowCell;
-      const [itemName, indexName] = loopArgs;
-
       const ingestCurrentRowAndPrepareToClone = () => {
+        const { targetArray, loopArgs } = baseForRowCell;
+        const [itemName, indexName] = loopArgs;
+
         ingestDataByRow(rawValue, {
           colSize,
           itemName,
           indexName,
           index: 0,
           rowIdx: pos.row,
-          startFromColIdx: pos.col,
+          startFromColIdx: pos.col + 1,
           value: data[targetArray][0],
         });
         cloningRows.push(cloneRowByIdx(rawValue, pos.row, pos.col));
       };
 
+      const isLastRow = pos.row === rowSize - 1;
+
       if (checkCellIsForeachLogic(cell)) {
         baseForRowCell = cell;
         ingestCurrentRowAndPrepareToClone();
-        return;
+        if (!isLastRow) {
+          return;
+        }
       }
 
       if (
@@ -97,22 +101,34 @@ export default class CSVTemplator<Data = any> {
         getParentCell(this._schema, cell.parentPos)
       ) {
         ingestCurrentRowAndPrepareToClone();
-        return;
+
+        if (!isLastRow) {
+          return;
+        }
       }
 
-      data[targetArray].splice(1).forEach((value, index) => {
-        cloningRows.forEach((cloningRow) => {
-          ingestDataByRow(rawValue, {
-            colSize,
-            itemName,
-            indexName,
-            value,
-            index,
-            rowIdx: cloningRow.pos.row,
-            startFromColIdx: cloningRow.pos.col,
+      if (baseForRowCell) {
+        const { targetArray, loopArgs } = baseForRowCell;
+        const [itemName, indexName] = loopArgs;
+
+        for (let i = 1; i < data[targetArray].length; i++) {
+          const value = data[targetArray][i];
+
+          cloningRows.forEach((cloningRow) => {
+            const newRowIdx = rawValue.pushNewRow(cloningRow);
+
+            ingestDataByRow(rawValue, {
+              colSize,
+              itemName,
+              indexName,
+              value,
+              index: i,
+              rowIdx: newRowIdx,
+              startFromColIdx: pos.col + 1,
+            });
           });
-        });
-      });
+        }
+      }
 
       // clean up
       cloningRows = [];
