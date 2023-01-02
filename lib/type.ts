@@ -25,7 +25,7 @@ export interface BaseCellSchema {
 
 export interface DataCellSchema extends BaseCellSchema {
   type: CellType.data;
-  eval: string | undefined; // TODO: check is pure text
+  eval: string; // TODO: check is pure text
   renderPosition: CellPosition;
 }
 
@@ -55,3 +55,39 @@ export type LogicCellSchema = ForeachLogicCellSchema | ExtendLogicCellSchema;
 export type CellSchema = LogicCellSchema | DataCellSchema | null;
 
 export type TemplateSchema = RawTable<CellSchema>;
+
+// #############
+// type checker
+// #############
+
+export function checkCellIsLogic(cell: CellSchema): cell is LogicCellSchema {
+  return cell && cell.type === CellType.logic;
+}
+
+export function checkCellIsData(cell: CellSchema): cell is DataCellSchema {
+  return cell && cell.type === CellType.data;
+}
+
+export function checkCellIsForeachLogic(
+  cell: CellSchema,
+): cell is ForeachLogicCellSchema {
+  if (checkCellIsLogic(cell)) {
+    return (
+      (cell && cell.logicType === LogicCellType.forCol) ||
+      cell.logicType === LogicCellType.forRow
+    );
+  }
+  return false;
+}
+
+export function checkCellIsExtendLogic(
+  cell: CellSchema,
+): cell is ExtendLogicCellSchema {
+  if (checkCellIsLogic(cell)) {
+    return (
+      (cell && cell.logicType === LogicCellType.extendCol) ||
+      cell.logicType === LogicCellType.extendRow
+    );
+  }
+  return false;
+}
