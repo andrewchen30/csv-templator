@@ -7,12 +7,12 @@ import { checkIsLogicCell, parseLogicCellSchema } from './parser/logicCell';
 import { parseDataCellSchema } from './parser/dataCell';
 
 export default class CSVTemplator<Data> {
-  private _option: Option;
-  private _rawTemplate: string;
-  private _rawTable: RawTable<string>;
-  private _schema: TemplateSchema;
-  private _logicRowIndexes: Set<number>;
-  private _logicColIndexes: Set<number>;
+  _option: Option;
+  _rawTemplate: string;
+  _rawTable: RawTable<string>;
+  _schema: TemplateSchema;
+  _logicRowIndexes: Set<number>;
+  _logicColIndexes: Set<number>;
 
   constructor(option: Option) {
     this._option = formatOption(option);
