@@ -47,7 +47,7 @@ export interface ForeachLogicCellSchema extends BaseLogicCellSchema {
 
 export interface ExtendLogicCellSchema extends BaseLogicCellSchema {
   logicType: LogicCellType.extendCol | LogicCellType.extendRow;
-  extendFromLoop: CellPosition;
+  parentPos: CellPosition;
 }
 
 export type LogicCellSchema = ForeachLogicCellSchema | ExtendLogicCellSchema;

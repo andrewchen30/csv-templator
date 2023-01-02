@@ -40,7 +40,7 @@ describe('Logic/Parser', () => {
       },
       expectLogicType: LogicCellType.extendCol,
       expectExtraOutput: {
-        extendFromLoop: { row: 2, col: 1 },
+        parentPos: { row: 2, col: 1 },
       },
     },
     {
@@ -51,7 +51,7 @@ describe('Logic/Parser', () => {
       },
       expectLogicType: LogicCellType.extendRow,
       expectExtraOutput: {
-        extendFromLoop: { row: 1, col: 2 },
+        parentPos: { row: 1, col: 2 },
       },
     },
   ];
