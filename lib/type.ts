@@ -21,7 +21,7 @@ export interface BaseCellInfo {
 
 export interface DataCellInfo extends BaseCellInfo {
   type: CellType.data;
-  eval: string | undefined;
+  eval: string | undefined; // TODO: check is pure text
   renderPosition: CellPosition;
 }
 
@@ -50,6 +50,4 @@ export type LogicCellInfo = ForeachLogicCellInfo | ExtendLogicCellInfo;
 
 export type CellInfo = LogicCellInfo | DataCellInfo | null;
 
-export interface TemplateParserOutput {
-  schema: CellInfo;
-}
+export type TemplateSchema = CellInfo[][];
