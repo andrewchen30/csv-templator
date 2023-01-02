@@ -82,13 +82,15 @@ export class TableOperator<CellType> {
         ...prev,
         [key]: {
           ...prev[key],
+          ...value,
         },
       });
     }
   }
 
   public pushNewRow(row: CellType[]): number {
-    this._rawTable.push(row);
+    // TODO: fix unnecessary copy here, it should be controlled by the caller
+    this._rawTable.push(row.map((c) => ({ ...c })));
 
     return this._rawTable.length - 1;
   }
@@ -142,9 +144,9 @@ export function ingestDataByRow(
   table: TableOperator<any>,
   {
     itemName,
+    indexName = '_index',
     rowIdx,
     startFromColIdx,
-    indexName,
     colSize,
     value,
     index,
@@ -173,8 +175,11 @@ export function cloneRowByIdx(
   rowIdx: number,
   cleanUpBeforeColIdx: number,
 ) {
-  const clonedRow = [...table.getRowByIndex(rowIdx)];
+  const clonedRow = table.getRowByIndex(rowIdx).map((c) => ({ ...c }));
 
-  // cleanup everything before for-row logic cell
-  clonedRow.splice(0, cleanUpBeforeColIdx, null);
+  for (let i = 0; i < cleanUpBeforeColIdx; i++) {
+    clonedRow[i] = null;
+  }
+
+  return clonedRow;
 }
