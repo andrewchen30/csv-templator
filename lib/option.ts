@@ -1,4 +1,4 @@
-import { SchemaStyle } from './parser/constants';
+import { SchemaStyle } from './rawSchemaParser/constants';
 
 export type Option = {
   schemaStyle?: SchemaStyle;

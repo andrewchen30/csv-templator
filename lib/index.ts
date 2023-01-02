@@ -1,6 +1,6 @@
-import SchemaParserByStyle from './parser';
+import SchemaParserByStyle from './rawSchemaParser';
 import { TemplateSchema } from './type';
-import { RawSchemaTable } from './parser/type';
+import { RawSchemaTable } from './rawSchemaParser/type';
 import { Option, formatOption } from './option';
 
 export default class CSVTemplator<Data> {
