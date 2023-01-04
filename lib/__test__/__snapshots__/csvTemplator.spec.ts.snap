@@ -542,7 +542,7 @@ TableOperator {
       },
     ],
     Array [
-      Object {},
+      null,
       Object {
         "data": Object {
           "_index": 1,
@@ -593,7 +593,7 @@ TableOperator {
       },
     ],
     Array [
-      Object {},
+      null,
       Object {
         "data": Object {
           "_index": 2,
@@ -642,6 +642,33 @@ TableOperator {
         },
         "eval": "user.age",
       },
+    ],
+  ],
+}
+`;
+
+exports[`CSV Templator render output should successfully prepare data for render: _rawValue 1`] = `
+TableOperator {
+  "_rawTable": Array [
+    Array [
+      "",
+      "name",
+      "age",
+    ],
+    Array [
+      "",
+      "Andrew",
+      "30",
+    ],
+    Array [
+      "",
+      "Joanne",
+      "28",
+    ],
+    Array [
+      "",
+      "Frank",
+      "22",
     ],
   ],
 }
