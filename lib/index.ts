@@ -3,7 +3,6 @@ import {
   CellSchema,
   LogicCellType,
   checkCellIsData,
-  CellType,
   checkCellIsForeachLogic,
   checkCellIsExtendLogic,
   ForeachLogicCellSchema,
@@ -12,6 +11,7 @@ import ExtensionByStyle from './extensions';
 import { Option, formatOption } from './option';
 import {
   cloneRowByIdx,
+  eval_exposeObjectAllKeys,
   getParentCell,
   ingestDataByRow,
   TableOperator,
@@ -26,6 +26,8 @@ type RawValue = {
   };
 };
 
+type RawOutputTable = TableOperator<string>;
+
 type RawValueTable = TableOperator<RawValue>;
 
 export default class CSVTemplator<Data = any> {
@@ -33,6 +35,7 @@ export default class CSVTemplator<Data = any> {
   _rawTemplate: string;
   _rawTable: RawTable;
   _rawValue: RawValueTable;
+  _rawOutput: RawOutputTable;
   _schema: TableOperator<CellSchema>;
   _logicRowIndexes: Set<number>;
   _logicColIndexes: Set<number>;
@@ -45,7 +48,12 @@ export default class CSVTemplator<Data = any> {
     // TODO: generate data validator from this._schema
 
     // allocate data and eval renderer to each cell
-    this._rawValue = this._prepareRawValue(data);
+    const rawValue = this._prepareRawValue(data);
+    const rawOutput = this.renderOutput(rawValue);
+
+    // backup
+    this._rawValue = rawValue;
+    this._rawOutput = rawOutput;
 
     return Buffer.from('', 'utf-8');
   }
@@ -136,6 +144,30 @@ export default class CSVTemplator<Data = any> {
     });
 
     return rawValue;
+  }
+
+  private renderOutput(rawValue: RawValueTable): RawOutputTable {
+    const outputTable = rawValue.initSameSizeEmptyTable<string>();
+
+    rawValue.scan((rawValue, pos) => {
+      // when raw value is empty, just make an empty cell
+      if (!rawValue || Object.keys(rawValue).length === 0 || !rawValue.eval) {
+        outputTable.updateCell(pos, '');
+        return;
+      }
+
+      const body = `
+        ${rawValue.data ? eval_exposeObjectAllKeys(rawValue.data) : ''}
+
+        return ${rawValue.eval};
+      `;
+
+      const result = Function.apply(null, ['data', body])(rawValue.data);
+
+      outputTable.updateCell(pos, result.toString());
+    }, false);
+
+    return outputTable;
   }
 
   public useTemplate(template: string) {

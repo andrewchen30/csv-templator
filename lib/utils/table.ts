@@ -90,7 +90,7 @@ export class TableOperator<CellType> {
 
   public pushNewRow(row: CellType[]): number {
     // TODO: fix unnecessary copy here, it should be controlled by the caller
-    this._rawTable.push(row.map((c) => ({ ...c })));
+    this._rawTable.push(row.map((c) => (c ? { ...c } : null)));
 
     return this._rawTable.length - 1;
   }
@@ -177,9 +177,8 @@ export function cloneRowByIdx(
 ) {
   const clonedRow = table.getRowByIndex(rowIdx).map((c) => ({ ...c }));
 
-  for (let i = 0; i < cleanUpBeforeColIdx; i++) {
+  for (let i = 0; i <= cleanUpBeforeColIdx; i++) {
     clonedRow[i] = null;
   }
-
   return clonedRow;
 }
