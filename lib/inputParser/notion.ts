@@ -1,9 +1,8 @@
-import { RawTable } from '@/type';
-import { ExtensionType } from './constants';
+import { TableOperator } from '@/utils';
 import { Extension } from './type';
 
 export default class NotionExtension implements Extension {
-  parse(raw: string): RawTable {
+  parse(raw: string): TableOperator<string> {
     const rows = raw
       // replace all special quotation from notion
       .replace(/(\"|“|”|‘|’)/g, "'")
@@ -12,18 +11,21 @@ export default class NotionExtension implements Extension {
       // remove table header structure in notion
       // | --- | --- | --- |
       .filter((x) => !this.checkIsHeaderRow(x));
-    return rows
-      .map((row) =>
-        row
-          .split('|')
-          .filter(Boolean)
 
-          // notion table has an extra empty cell at the beginning
-          .slice(1)
+    return new TableOperator(
+      rows
+        .map((row) =>
+          row
+            .split('|')
+            .filter(Boolean)
 
-          .map((str) => str.trim()),
-      )
-      .filter((cells) => cells.length >= 1);
+            // notion table has an extra empty cell at the beginning
+            .slice(1)
+
+            .map((str) => str.trim()),
+        )
+        .filter((cells) => cells.length >= 1),
+    );
   }
 
   private checkIsHeaderRow(rawRowStr: string): boolean {

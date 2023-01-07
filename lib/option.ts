@@ -1,4 +1,4 @@
-import { ExtensionType } from './extensions/constants';
+import { ExtensionType } from './inputParser/const';
 
 export type Option = {
   schemaStyle?: ExtensionType;
