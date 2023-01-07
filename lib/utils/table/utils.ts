@@ -23,47 +23,60 @@ export function getParentCell(
   return null;
 }
 
-export function ingestDataByRow(
+// refactor the ingestDataByRow and ingestDataByCol as one function ingestDataByRowOrCol
+export function ingestDataByRowOrCol(
   table: TableOperator<any>,
   {
     itemName,
     indexName = '_index',
-    rowIdx,
-    startFromColIdx,
-    colSize,
+    targetIdx,
+    startFromIdx = 0,
+    size,
     value,
-    index,
+    itemIndex,
     key = 'data',
+    isRow,
   }: {
     itemName: string;
     indexName: string;
-    startFromColIdx: number;
-    colSize: number;
-    rowIdx: number;
+    startFromIdx: number;
+    size: number;
+    targetIdx: number;
     value: any;
-    index: number;
+    itemIndex: number;
     key?: string;
+    isRow: boolean;
   },
 ) {
-  for (let i = startFromColIdx; i < colSize; i++) {
-    table.injectCellByKey({ row: rowIdx, col: i }, key, {
-      [itemName]: value,
-      [indexName]: index,
-    });
+  for (let i = startFromIdx; i < size; i++) {
+    table.injectCellByKey(
+      isRow ? { row: targetIdx, col: i } : { row: i, col: targetIdx },
+      key,
+      {
+        [itemName]: value,
+        [indexName]: itemIndex,
+      },
+    );
   }
 }
 
-export function cloneRowByIdx(
-  table: TableOperator<any>,
-  rowIdx: number,
-  cleanUpBeforeColIdx: number,
-) {
-  const clonedRow = table.getRowByIndex(rowIdx).map((c) => ({ ...c }));
+// refactor the cloneRowByIdx and cloneColByIdx as one function cloneRowOrColByIdx
+export function cloneRowOrColByIdx({
+  table,
+  targetIdx,
+  startFromIdx,
+  isRow,
+}: {
+  table: TableOperator<any>;
+  targetIdx: number;
+  startFromIdx: number;
+  isRow: boolean;
+}) {
+  const toCloneRecord = isRow
+    ? table.getRowByIndex(targetIdx)
+    : table.getColumnByIndex(targetIdx);
 
-  for (let i = 0; i <= cleanUpBeforeColIdx; i++) {
-    clonedRow[i] = null;
-  }
-  return clonedRow;
+  return toCloneRecord.map((c, i) => (i >= startFromIdx ? { ...c } : null));
 }
 
 export function formatCSV(table: TableOperator<string>): string {

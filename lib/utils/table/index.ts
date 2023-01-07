@@ -109,6 +109,10 @@ export class TableOperator<CellType> {
     return this._rawTable[idx];
   }
 
+  public getColumnByIndex(idx: number): CellType[] {
+    return this._rawTable.map((row) => row[idx]);
+  }
+
   public getRawTable(): RawTable<CellType> {
     return this._rawTable;
   }

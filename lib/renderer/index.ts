@@ -1,17 +1,25 @@
 import {
-  ingestDataByRow,
-  cloneRowByIdx,
   getParentCell,
+  ingestDataByRowOrCol,
+  cloneRowOrColByIdx,
   TableOperator,
 } from '@/utils';
 import {
   checkCellIsData,
-  ForeachLogicCellSchema,
   checkCellIsForeachLogic,
   checkCellIsExtendLogic,
+  LogicCellType,
+  ForeachLogicCellSchema,
 } from '@/type';
-import { RendererCell, RendererInput, RendererOutput } from './type';
+import {
+  Renderer,
+  RendererCell,
+  RendererInput,
+  RendererOutput,
+  RenderForLoopInput,
+} from './type';
 import { eval_exposeObjectAllKeys } from './eval';
+import { ForLoopLogicTypes, ForLoopRendererConfig } from './const';
 
 export function render<Data>(input: RendererInput<Data>): RendererOutput {
   const renderer = prepareRenderer<Data>(input);
@@ -20,9 +28,7 @@ export function render<Data>(input: RendererInput<Data>): RendererOutput {
   };
 }
 
-function renderOutput(
-  renderer: TableOperator<RendererCell>,
-): TableOperator<string> {
+function renderOutput(renderer: Renderer): TableOperator<string> {
   const output = renderer.initSameSizeEmptyTable<string>();
 
   renderer.scan((cell, pos) => {
@@ -33,6 +39,7 @@ function renderOutput(
     }
 
     const body = `
+      // eval function at [${pos.row},${pos.col}]
       ${cell.data ? eval_exposeObjectAllKeys(cell.data) : ''}
 
       return ${cell.eval};
@@ -48,9 +55,8 @@ function renderOutput(
 
 function prepareRenderer<Data>(input: RendererInput<Data>) {
   const { schema, data } = input;
-  const { schemaTable, logicColIndexes } = schema;
+  const { schemaTable } = schema;
   const renderer = schemaTable.initSameSizeEmptyTable<RendererCell>();
-  const [rowSize, colSize] = renderer.getSize();
 
   // ingest data into pure data cell
   schemaTable.scan((cell, pos) => {
@@ -59,79 +65,133 @@ function prepareRenderer<Data>(input: RendererInput<Data>) {
     }
   });
 
-  let cloningRows = [];
-  let baseForRowCell: ForeachLogicCellSchema;
+  ForLoopLogicTypes.forEach((logicCellType) => {
+    renderForLoop({
+      data,
+      schema,
+      renderer,
+      logicCellType,
+    });
+  });
 
-  // ingest data into for-row logic row
-  schemaTable.scanByCol((cell, pos) => {
-    if (!logicColIndexes.has(pos.col)) {
+  return renderer;
+}
+
+function renderForLoop(input: RenderForLoopInput) {
+  const { schema, renderer, data, logicCellType } = input;
+  const [rowSize, colSize] = renderer.getSize();
+
+  const config = ForLoopRendererConfig[logicCellType];
+  const { [config.logicIndexes]: logicIndexes, schemaTable } = schema;
+
+  let toCloneRecords = [];
+  let baseSchema: ForeachLogicCellSchema;
+
+  schemaTable[config.scanner]((cell, pos) => {
+    const isRow = logicCellType === LogicCellType.forRow;
+    if (!logicIndexes.has(isRow ? pos.col : pos.row)) {
       return;
     }
 
-    const ingestCurrentRowAndPrepareToClone = () => {
-      const { targetArray, loopArgs } = baseForRowCell;
+    const prepareToClone = () => {
+      const { targetArray, loopArgs } = baseSchema;
       const [itemName, indexName] = loopArgs;
 
-      ingestDataByRow(renderer, {
-        colSize,
+      ingestDataByRowOrCol(renderer, {
+        isRow,
         itemName,
         indexName,
-        index: 0,
-        rowIdx: pos.row,
-        startFromColIdx: pos.col + 1,
+        itemIndex: 0,
         value: data[targetArray][0],
+        ...(isRow
+          ? {
+              targetIdx: pos.row,
+              startFromIdx: pos.col + 1,
+              size: colSize,
+            }
+          : {
+              targetIdx: pos.col,
+              startFromIdx: pos.row + 1,
+              size: rowSize,
+            }),
       });
-      cloningRows.push(cloneRowByIdx(renderer, pos.row, pos.col));
+
+      toCloneRecords.push(
+        cloneRowOrColByIdx({
+          isRow,
+          table: renderer,
+          ...(isRow
+            ? {
+                targetIdx: pos.row,
+                startFromIdx: pos.col + 1,
+              }
+            : {
+                targetIdx: pos.col,
+                startFromIdx: pos.row + 1,
+              }),
+        }),
+      );
     };
 
-    const isLastRow = pos.row === rowSize - 1;
+    const isLastOne = isRow ? pos.row === rowSize - 1 : pos.col === colSize - 1;
 
-    if (checkCellIsForeachLogic(cell)) {
-      baseForRowCell = cell;
-      ingestCurrentRowAndPrepareToClone();
-      if (!isLastRow) {
+    if (checkCellIsForeachLogic(cell) && cell.logicType === logicCellType) {
+      baseSchema = cell;
+      prepareToClone();
+      if (!isLastOne) {
         return;
       }
     }
 
     if (
       checkCellIsExtendLogic(cell) &&
+      cell.logicType === config.extendLogic &&
       getParentCell(schemaTable, cell.parentPos)
     ) {
-      ingestCurrentRowAndPrepareToClone();
+      prepareToClone();
 
-      if (!isLastRow) {
+      if (!isLastOne) {
         return;
       }
     }
 
-    if (baseForRowCell) {
-      const { targetArray, loopArgs } = baseForRowCell;
+    if (baseSchema && toCloneRecords.length > 0) {
+      const { targetArray, loopArgs } = baseSchema;
       const [itemName, indexName] = loopArgs;
 
       for (let i = 1; i < data[targetArray].length; i++) {
         const value = data[targetArray][i];
 
-        cloningRows.forEach((cloningRow) => {
-          const newRowIdx = renderer.pushNewRow(cloningRow);
+        toCloneRecords.forEach((toCloneRecord) => {
+          const targetIdx = isRow
+            ? renderer.pushNewRow(toCloneRecord)
+            : renderer.pushNewCol(toCloneRecord);
 
-          ingestDataByRow(renderer, {
-            colSize,
+          ingestDataByRowOrCol(renderer, {
+            isRow,
+            value,
             itemName,
             indexName,
-            value,
-            index: i,
-            rowIdx: newRowIdx,
-            startFromColIdx: pos.col + 1,
+            ...(isRow
+              ? {
+                  targetIdx,
+                  size: colSize,
+                  itemIndex: i,
+                  startFromIdx: pos.col + 1,
+                }
+              : {
+                  targetIdx,
+                  size: rowSize,
+                  itemIndex: i,
+                  startFromIdx: pos.row + 1,
+                }),
           });
         });
       }
     }
 
     // clean up
-    cloningRows = [];
-    baseForRowCell = null;
+    baseSchema = null;
+    toCloneRecords = [];
   });
-
-  return renderer;
 }
