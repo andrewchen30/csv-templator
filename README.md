@@ -1,7 +1,5 @@
 # CSV-Templator
 
----
-
 A easy CSV template render using 2D table to implement your own code logic
 
 ## Pain point
@@ -10,7 +8,9 @@ A easy CSV template render using 2D table to implement your own code logic
 - Schemas of CSV importer/exporter are hard to read and maintain
 - Render(format) logic, data adjustment logic, and business logic all mix together
 
-# Develope
+---
+
+# Develop Guide
 
 Internal flow
 
@@ -24,7 +24,8 @@ Input1[Input]
 --> |Renderer| Output[Output CSV String]
 
 Input2[Data] --> D
-style Input1 fill:#85a67e
-style Input2 fill:#85a67e
-style Output fill:#a1b2d6
+
+style Input1 stroke:#85a67e,stroke-width:2px
+style Input2 stroke:#85a67e,stroke-width:2px
+style Output stroke:#a1b2d6,stroke-width:3px
 ```
