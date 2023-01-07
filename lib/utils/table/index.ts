@@ -1,10 +1,6 @@
-import {
-  CellPosition,
-  CellSchema,
-  checkCellIsExtendLogic,
-  checkCellIsForeachLogic,
-  RawTable,
-} from '@/type';
+import { CellPosition, RawTable } from '@/type';
+
+export * from './utils';
 
 type ScannerCallback<RawType> = (raw: RawType, pos: CellPosition) => void;
 
@@ -121,64 +117,8 @@ export class TableOperator<CellType> {
     const [row, col] = this.getSize();
     return new TableOperator(initEmptyTable(row, col));
   }
-}
 
-export function getParentCell(
-  table: TableOperator<CellSchema>,
-  pos: CellPosition,
-): CellSchema {
-  const cell = table.getCell(pos);
-
-  if (checkCellIsExtendLogic(cell)) {
-    return getParentCell(table, cell.parentPos);
+  public toArray() {
+    return this._rawTable.map((row) => row.map((c) => c));
   }
-
-  if (checkCellIsForeachLogic(cell)) {
-    return cell;
-  }
-
-  return null;
-}
-
-export function ingestDataByRow(
-  table: TableOperator<any>,
-  {
-    itemName,
-    indexName = '_index',
-    rowIdx,
-    startFromColIdx,
-    colSize,
-    value,
-    index,
-    key = 'data',
-  }: {
-    itemName: string;
-    indexName: string;
-    startFromColIdx: number;
-    colSize: number;
-    rowIdx: number;
-    value: any;
-    index: number;
-    key?: string;
-  },
-) {
-  for (let i = startFromColIdx; i < colSize; i++) {
-    table.injectCellByKey({ row: rowIdx, col: i }, key, {
-      [itemName]: value,
-      [indexName]: index,
-    });
-  }
-}
-
-export function cloneRowByIdx(
-  table: TableOperator<any>,
-  rowIdx: number,
-  cleanUpBeforeColIdx: number,
-) {
-  const clonedRow = table.getRowByIndex(rowIdx).map((c) => ({ ...c }));
-
-  for (let i = 0; i <= cleanUpBeforeColIdx; i++) {
-    clonedRow[i] = null;
-  }
-  return clonedRow;
 }

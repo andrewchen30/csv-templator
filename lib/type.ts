@@ -1,3 +1,5 @@
+import { TableOperator } from './utils';
+
 type RawTableCell<C = string> = C;
 type RawTableRow<C> = RawTableCell<C>[];
 export type RawTable<CellType = string> = RawTableRow<CellType>[];
@@ -54,7 +56,11 @@ export type LogicCellSchema = ForeachLogicCellSchema | ExtendLogicCellSchema;
 
 export type CellSchema = LogicCellSchema | DataCellSchema | null;
 
-export type TemplateSchema = RawTable<CellSchema>;
+export type Schema = {
+  schemaTable: TableOperator<CellSchema>;
+  logicRowIndexes: Set<number>;
+  logicColIndexes: Set<number>;
+};
 
 // #############
 // type checker

@@ -18,7 +18,7 @@ describe('Notion Parser', () => {
     | // for-row (item in allOrderedSkus) | item.sku | sh.lineItemBySku[item.sku] ?? ‘-’ |
     `;
 
-    expect(parser.parse(notionTable)).toMatchSnapshot();
+    expect(parser.parse(notionTable).toArray()).toMatchSnapshot();
   });
 
   it('should successfully with special quotation', () => {
@@ -28,7 +28,7 @@ describe('Notion Parser', () => {
     | "ccc" |
     `;
 
-    expect(parser.parse(notionTable)).toEqual([
+    expect(parser.parse(notionTable).toArray()).toEqual([
       ["'aaa'"],
       ["'bbb'"],
       ["'ccc'"],
