@@ -2,17 +2,17 @@ import { LogicCellType } from '@/type';
 
 export const ForLoopRendererConfig = {
   [LogicCellType.forRow]: {
-    scanner: 'scanByCol' as const,
-    logicIndexes: 'logicColIndexes' as const,
+    scanner: 'scanByCol',
+    logicIndexes: 'logicColIndexes',
     extendLogic: LogicCellType.extendRow,
   },
 
   [LogicCellType.forCol]: {
-    scanner: 'scanByRow' as const,
-    logicIndexes: 'logicRowIndexes' as const,
+    scanner: 'scanByRow',
+    logicIndexes: 'logicRowIndexes',
     extendLogic: LogicCellType.extendCol,
   },
-};
+} as const;
 
 export const ForLoopLogicTypes = [
   LogicCellType.forRow,
