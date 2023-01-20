@@ -3,6 +3,7 @@ import {
   CellPosition,
   checkCellIsExtendLogic,
   checkCellIsForeachLogic,
+  Schema,
 } from '@/type';
 import { TableOperator } from '.';
 
@@ -79,13 +80,24 @@ export function cloneRowOrColByIdx({
   return toCloneRecord.map((c, i) => (i >= startFromIdx ? { ...c } : null));
 }
 
-export function formatCSV(table: TableOperator<string>): string {
+export function formatCSV(
+  table: TableOperator<string>,
+  schema: Schema,
+): string {
   const [row, col] = table.getSize();
   let r = '';
 
   for (let i = 0; i < row; i++) {
+    if (schema.logicRowIndexes.has(i)) {
+      continue;
+    }
+
     const row = table.getRowByIndex(i);
     for (let j = 0; j < col; j++) {
+      if (schema.logicColIndexes.has(j)) {
+        continue;
+      }
+
       r += row[j];
       if (j !== col - 1) {
         r += ',';

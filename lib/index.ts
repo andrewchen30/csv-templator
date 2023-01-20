@@ -30,7 +30,7 @@ export default class CSVTemplator<Data = any> {
       schema: this._schema,
       data,
     });
-    return formatCSV(table);
+    return formatCSV(table, this._schema);
   }
 
   public renderToBuffer(data: Data): Buffer {
