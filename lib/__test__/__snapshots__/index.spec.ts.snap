@@ -435,9 +435,8 @@ Object {
 `;
 
 exports[`CSV Templator render output should successfully prepare data for render: _rawValue 1`] = `
-",name,age
-,Andrew,30
-,Joanne,28
-,Frank,22
+"name,age
+Joanne,28
+Frank,22
 "
 `;
