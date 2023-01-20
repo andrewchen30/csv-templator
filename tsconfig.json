@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "target": "esnext",
+    "target": "es5",
     "module": "commonjs",
     "declaration": true,
     "moduleResolution": "node",
@@ -10,7 +10,6 @@
     "allowJs": true,
     "importHelpers": true,
     "alwaysStrict": true,
-    "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
@@ -19,10 +18,7 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": false,
-    "baseUrl": "lib",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "baseUrl": "lib"
   },
   "include": ["lib/**/*"],
   "exclude": ["node_modules", "**/__tests__/*"]
