@@ -3,6 +3,7 @@
     "outDir": "dist",
     "target": "esnext",
     "module": "commonjs",
+    "declaration": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
@@ -23,5 +24,6 @@
       "@/*": ["*"]
     }
   },
-  "include": ["lib/**/*"]
+  "include": ["lib/**/*"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }
