@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist",
   "scripts": {
-    "build": "tsc",
     "test:watch": "jest --watch -i",
-    "test:ci": "jest --coverage --silent -i lib/**/*.spec.ts"
+    "test:ci": "jest --coverage --silent -i lib/**/*.spec.ts",
+    "build:ci": "tsc"
   },
   "repository": {
     "type": "git",
