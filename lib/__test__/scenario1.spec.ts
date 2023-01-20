@@ -15,10 +15,8 @@ describe('scenario 1', () => {
     {
       desc: 'should successfully render list',
       template: `
-      | "Date:" + (new Date()).toLocaleString() |        |         | 
       |                       | "name"                   | "email" |
       | // for-row u in users | u.firstName + u.lastName | u.email |
-      
     `,
       getData: () => ({
         users,
