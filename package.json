@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist",
   "scripts": {
-    "build:tsc": "tsc",
+    "build": "tsc",
     "test:watch": "jest --watch -i",
     "test:ci": "jest --coverage --silent -i lib/**/*.spec.ts"
   },
