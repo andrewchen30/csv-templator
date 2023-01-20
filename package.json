@@ -6,7 +6,7 @@
   "scripts": {
     "test:watch": "jest --watch -i",
     "test:ci": "jest --coverage --silent -i lib/**/*.spec.ts",
-    "build:tsc": "tsc",
+    "build:tsc": "tsc && npx tsc-alias",
     "build:ci": "npm run build:tsc && rm -rf lib && mv dist lib"
   },
   "repository": {

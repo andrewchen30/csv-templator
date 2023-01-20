@@ -18,8 +18,17 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": false,
-    "baseUrl": "lib"
+    "baseUrl": "lib",
+    "rootDir": "lib",
+    "paths": {
+      "@/*": ["*"]
+    },
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "checkJs": true,
+    "declarationMap": true,
+    "declarationDir": "dist/types"
   },
-  "include": ["lib/**/*"],
+  "include": ["lib/index.ts"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }
