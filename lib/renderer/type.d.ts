@@ -5,6 +5,7 @@ import { LogicCellType, Schema } from '@/type';
 export type RendererInput<Data> = {
   schema: SchemaParserOutput;
   data: Data;
+  options?: RenderOptions;
 };
 
 export type RendererOutput = {
@@ -25,4 +26,10 @@ export type RenderForLoopInput = {
   schema: Schema;
   renderer: Renderer;
   logicCellType: LogicCellType.forCol | LogicCellType.forRow;
+};
+
+export type RenderOptions = {
+  defaultValFor_Null?: string;
+  defaultValFor_Undefined?: string;
+  defaultValFor_NaN?: string;
 };

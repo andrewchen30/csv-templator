@@ -29,6 +29,6 @@
     "declarationMap": true,
     "declarationDir": "dist/types"
   },
-  "include": ["lib/index.ts"],
+  "include": ["lib/index.ts", "lib/**/*.ts"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }
