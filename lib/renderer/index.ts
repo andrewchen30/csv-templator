@@ -10,6 +10,7 @@ import {
   checkCellIsExtendLogic,
   LogicCellType,
   ForeachLogicCellSchema,
+  CellPosition,
 } from '@/type';
 import {
   Renderer,
@@ -17,6 +18,7 @@ import {
   RendererInput,
   RendererOutput,
   RenderForLoopInput,
+  RenderOptions,
 } from './type';
 import { eval_exposeObjectAllKeys } from './eval';
 import { ForLoopLogicTypes, ForLoopRendererConfig } from './const';
@@ -24,33 +26,72 @@ import { ForLoopLogicTypes, ForLoopRendererConfig } from './const';
 export function render<Data>(input: RendererInput<Data>): RendererOutput {
   const renderer = prepareRenderer<Data>(input);
   return {
-    table: renderOutput(renderer),
+    table: renderOutput(renderer, input.options),
   };
 }
 
-function renderOutput(renderer: Renderer): TableOperator<string> {
+function renderOutput(
+  renderer: Renderer,
+  options: RenderOptions,
+): TableOperator<string> {
   const output = renderer.initSameSizeEmptyTable<string>();
 
   renderer.scan((cell, pos) => {
-    // when raw value is empty, just make an empty cell
-    if (!cell || Object.keys(cell).length === 0 || !cell.eval) {
-      output.updateCell(pos, '');
-      return;
-    }
+    output.updateCell(pos, renderOutputCell(cell, pos, options));
+  }, false);
 
-    const body = `
+  return output;
+}
+
+export function renderOutputCell(
+  cell: RendererCell,
+  pos: CellPosition,
+  options: RenderOptions = {},
+) {
+  const {
+    defaultValFor_NaN = '',
+    defaultValFor_Null = '-',
+    defaultValFor_Undefined = '',
+  } = options;
+
+  // when raw value is empty, just make an empty cell
+  if (!cell || Object.keys(cell).length === 0 || !cell.eval) {
+    return defaultValFor_Undefined;
+  }
+
+  const body = `
       // eval function at [${pos.row},${pos.col}]
       ${cell.data ? eval_exposeObjectAllKeys(cell.data) : ''}
 
       return ${cell.eval};
     `;
 
-    const result = Function.apply(null, ['data', body])(cell.data);
+  try {
+    const r = Function.apply(null, ['data', body])(cell.data);
 
-    output.updateCell(pos, result.toString());
-  }, false);
+    if (r === null) {
+      return defaultValFor_Null;
+    }
 
-  return output;
+    if (Number.isNaN(r)) {
+      return defaultValFor_NaN;
+    }
+
+    if (r === undefined) {
+      return defaultValFor_Undefined;
+    }
+
+    return r.toString();
+  } catch (error) {
+    console.error('Failed to render cell at', pos, 'with error:', error, body);
+
+    // TODO: enhance error handling
+    if (error.message.includes(' is not defined')) {
+      return defaultValFor_Undefined;
+    }
+
+    throw new Error(`Error at [${pos.row}, ${pos.col}]: ${error.message}`);
+  }
 }
 
 function prepareRenderer<Data>(input: RendererInput<Data>) {
