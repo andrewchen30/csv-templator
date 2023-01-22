@@ -54,6 +54,28 @@ describe('Logic/Parser', () => {
         parentPos: { row: 1, col: 2 },
       },
     },
+    {
+      desc: 'should successfully visible-row',
+      input: {
+        raw: '% visible-row isEnable %',
+        pos: { row: 0, col: 0 },
+      },
+      expectLogicType: LogicCellType.visibleRow,
+      expectExtraOutput: {
+        eval: 'isEnable',
+      },
+    },
+    {
+      desc: 'should successfully visible-col',
+      input: {
+        raw: '% visible-col isEnable %',
+        pos: { row: 0, col: 0 },
+      },
+      expectLogicType: LogicCellType.visibleCol,
+      expectExtraOutput: {
+        eval: 'isEnable',
+      },
+    },
   ];
 
   it.each(successCases)(
@@ -88,6 +110,24 @@ describe('Logic/Parser', () => {
         pos: { row: 1, col: 2 },
       },
       expectErrorMsg: '[1, 2] Invalid logic command some-command',
+    },
+    {
+      desc: 'visible-row should only use in index 0',
+      input: {
+        raw: '% visible-row isEnable %',
+        pos: { row: 1, col: 1 },
+      },
+      expectErrorMsg:
+        '[1, 1] Invalid logic command visible-row, should be in first col',
+    },
+    {
+      desc: 'visible-col should only use in index 0',
+      input: {
+        raw: '% visible-col isEnable %',
+        pos: { row: 1, col: 1 },
+      },
+      expectErrorMsg:
+        '[1, 1] Invalid logic command visible-col, should be in first row',
     },
   ];
 

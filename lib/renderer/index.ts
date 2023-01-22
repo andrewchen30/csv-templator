@@ -11,6 +11,7 @@ import {
   LogicCellType,
   ForeachLogicCellSchema,
   CellPosition,
+  CellType,
 } from '@/type';
 import {
   Renderer,
@@ -25,6 +26,7 @@ import { ForLoopLogicTypes, ForLoopRendererConfig } from './const';
 
 export function render<Data>(input: RendererInput<Data>): RendererOutput {
   const renderer = prepareRenderer<Data>(input);
+
   return {
     table: renderOutput(renderer, input.options),
   };
@@ -60,7 +62,6 @@ export function renderOutputCell(
   }
 
   const body = `
-      // eval function at [${pos.row},${pos.col}]
       ${cell.data ? eval_exposeObjectAllKeys(cell.data) : ''}
 
       return ${cell.eval};
@@ -98,6 +99,39 @@ function prepareRenderer<Data>(input: RendererInput<Data>) {
   const { schema, data } = input;
   const { schemaTable } = schema;
   const renderer = schemaTable.initSameSizeEmptyTable<RendererCell>();
+
+  const getVisibility = (evalScript: string) => {
+    return Boolean(
+      Function.apply(null, [
+        'data',
+        `${data ? eval_exposeObjectAllKeys(data) : ''};
+
+        return ${evalScript};`,
+      ])(data),
+    );
+  };
+
+  // remove invisible column
+  schemaTable.scanRowByIndex(0, (cell, { col }) => {
+    if (
+      cell.type === CellType.logic &&
+      cell.logicType === LogicCellType.visibleCol &&
+      !getVisibility(cell.eval)
+    ) {
+      schemaTable.removeColByIndex(col);
+    }
+  });
+
+  // remove invisible row
+  schemaTable.scanColByIndex(0, (cell, { row }) => {
+    if (
+      cell.type === CellType.logic &&
+      cell.logicType === LogicCellType.visibleRow &&
+      !getVisibility(cell.eval)
+    ) {
+      schemaTable.removeRowByIndex(row);
+    }
+  });
 
   // ingest data into pure data cell
   schemaTable.scan((cell, pos) => {

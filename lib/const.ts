@@ -2,8 +2,8 @@ import { LogicCellType } from './type';
 
 export const LogicCellCtrl = {
   // always follow by a space, so that we can split by space
-  left: '%',
-  right: '%',
+  left: '% ',
+  right: ' %',
 };
 
 export const LogicCommandByType: { [command in LogicCellType]: string } = {
@@ -11,6 +11,8 @@ export const LogicCommandByType: { [command in LogicCellType]: string } = {
   [LogicCellType.forRow]: 'for-row',
   [LogicCellType.extendCol]: 'extend-col',
   [LogicCellType.extendRow]: 'extend-row',
+  [LogicCellType.visibleRow]: 'visible-row',
+  [LogicCellType.visibleCol]: 'visible-col',
 };
 
 export const LogicTypeByCommand: { [command: string]: LogicCellType } =

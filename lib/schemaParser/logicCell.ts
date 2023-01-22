@@ -45,13 +45,10 @@ export function parseLogicCellSchema({
       }
 
       return {
+        logicType,
         targetArray,
         type: CellType.logic,
         loopArgs: Array.isArray(loopArgs) ? loopArgs : [loopArgs],
-        logicType:
-          logicType === LogicCellType.forCol
-            ? LogicCellType.forCol
-            : LogicCellType.forRow,
         _positionInTemplate: pos,
       };
     }
@@ -60,11 +57,8 @@ export function parseLogicCellSchema({
     case LogicCellType.extendRow:
     case LogicCellType.extendCol: {
       return {
+        logicType,
         type: CellType.logic,
-        logicType:
-          logicType === LogicCellType.extendCol
-            ? LogicCellType.extendCol
-            : LogicCellType.extendRow,
         parentPos:
           logicType === LogicCellType.extendCol
             ? {
@@ -75,6 +69,38 @@ export function parseLogicCellSchema({
                 row: pos.row - 1,
                 col: pos.col,
               },
+        _positionInTemplate: pos,
+      };
+    }
+    // command: visible-col, visible-row
+    // commandArgs: eval script string
+    case LogicCellType.visibleRow:
+    case LogicCellType.visibleCol: {
+      if (logicType === LogicCellType.visibleCol && pos.row !== 0) {
+        throw new Error(
+          getErrorMsgWithPos(
+            `Invalid logic command visible-col, should be in first row`,
+            pos,
+          ),
+        );
+      }
+
+      if (logicType === LogicCellType.visibleRow && pos.col !== 0) {
+        throw new Error(
+          getErrorMsgWithPos(
+            `Invalid logic command visible-row, should be in first col`,
+            pos,
+          ),
+        );
+      }
+
+      commandArgs.pop();
+      const evalScriptStr = commandArgs.join(' ');
+
+      return {
+        logicType,
+        type: CellType.logic,
+        eval: evalScriptStr,
         _positionInTemplate: pos,
       };
     }

@@ -65,6 +65,34 @@ export class TableOperator<CellType> {
     }
   }
 
+  public scanRowByIndex(
+    rowIndex: number,
+    cb: ScannerCallback<CellType>,
+    ignoreEmptyCell: boolean = true,
+  ) {
+    this._rawTable[rowIndex].forEach((cell, colIndex) => {
+      if (ignoreEmptyCell && !cell) {
+        return;
+      }
+      cb(cell, { row: rowIndex, col: colIndex });
+    });
+  }
+
+  public scanColByIndex(
+    colIndex: number,
+    cb: ScannerCallback<CellType>,
+
+    ignoreEmptyCell: boolean = true,
+  ) {
+    this._rawTable.forEach((row, rowIndex) => {
+      const cell = row[colIndex];
+      if (ignoreEmptyCell && !cell) {
+        return;
+      }
+      cb(cell, { row: rowIndex, col: colIndex });
+    });
+  }
+
   public updateCell(pos: CellPosition, value: CellType) {
     this._rawTable[pos.row][pos.col] = value;
   }
@@ -100,6 +128,16 @@ export class TableOperator<CellType> {
     });
 
     return index + 1;
+  }
+
+  public removeColByIndex(index: number) {
+    this._rawTable.forEach((row) => {
+      row.splice(index, 1);
+    });
+  }
+
+  public removeRowByIndex(index: number) {
+    this._rawTable.splice(index, 1);
   }
 
   public getCell(pos: CellPosition): CellType {

@@ -32,9 +32,9 @@ describe('CSV Templator', () => {
         desc: 'should parse for-col',
         template: `
           | % for-col item in list % | 
-          | item.name | 
-          | item.name |
-          | item.name |
+          | item.name                | 
+          | item.name                |
+          | item.name                |
         `,
       },
       {
@@ -47,11 +47,11 @@ describe('CSV Templator', () => {
         desc: 'should parse extend-col and extend-row',
         template: `
 
-        | | % for-col item in list % |
-        | | item.name |
-        | | item.name |
-        | | item.name |
-        | % for-row item2 in list % | item2[item.name] |
+        |                           | % for-col item in list % |
+        |                           | item.name                |
+        |                           | item.name                |
+        |                           | item.name                |
+        | % for-row item2 in list % | item2[item.name]         |
       `,
       },
     ];
@@ -72,10 +72,26 @@ describe('CSV Templator', () => {
       {
         desc: 'should successfully prepare data for render',
         template: `
-        | | "name" | "age"
+        |                           | "name"    | "age"    | 
         | % for-row user in users % | user.name | user.age |
       `,
         data: {
+          users: [
+            { name: 'Andrew', age: 30 },
+            { name: 'Joanne', age: 28 },
+            { name: 'Frank', age: 22 },
+          ],
+        },
+      },
+      {
+        desc: 'should successfully hide the column age',
+        template: `
+        |                           |           | % visible-col showAge % | 
+        |                           | "name"    | "age"                   | 
+        | % for-row user in users % | user.name | user.age                |
+      `,
+        data: {
+          showAge: false,
           users: [
             { name: 'Andrew', age: 30 },
             { name: 'Joanne', age: 28 },

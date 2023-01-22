@@ -14,6 +14,8 @@ export enum LogicCellType {
   forRow,
   extendCol,
   extendRow,
+  visibleCol,
+  visibleRow,
 }
 
 export type CellPosition = {
@@ -52,7 +54,17 @@ export interface ExtendLogicCellSchema extends BaseLogicCellSchema {
   parentPos: CellPosition;
 }
 
-export type LogicCellSchema = ForeachLogicCellSchema | ExtendLogicCellSchema;
+export interface VisibleLogicCellSchema extends BaseLogicCellSchema {
+  logicType: LogicCellType.visibleCol | LogicCellType.visibleRow;
+
+  // hide whole row or col when condition is false
+  eval: string;
+}
+
+export type LogicCellSchema =
+  | ForeachLogicCellSchema
+  | ExtendLogicCellSchema
+  | VisibleLogicCellSchema;
 
 export type CellSchema = LogicCellSchema | DataCellSchema | null;
 
