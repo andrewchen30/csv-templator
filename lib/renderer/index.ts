@@ -184,6 +184,7 @@ function renderForLoop(input: RenderForLoopInput) {
       }
     }
 
+    // if the follow cell is extend logic, we keep this row/col as as toCloneRecord
     if (
       checkCellIsExtendLogic(cell) &&
       cell.logicType === config.extendLogic &&
@@ -200,33 +201,41 @@ function renderForLoop(input: RenderForLoopInput) {
       const { targetArray, loopArgs } = baseSchema;
       const [itemName, indexName] = loopArgs;
 
+      let appendAfterIndex = isRow ? pos.row : pos.col;
+
       for (let i = 1; i < data[targetArray].length; i++) {
         const value = data[targetArray][i];
 
         toCloneRecords.forEach((toCloneRecord) => {
           const targetIdx = isRow
-            ? renderer.pushNewRow(toCloneRecord)
-            : renderer.pushNewCol(toCloneRecord);
+            ? renderer.appendNewRowAfterTheIndex(
+                toCloneRecord,
+                appendAfterIndex,
+              )
+            : renderer.appendNewColAfterTheIndex(
+                toCloneRecord,
+                appendAfterIndex,
+              );
 
           ingestDataByRowOrCol(renderer, {
             isRow,
             value,
             itemName,
             indexName,
+            targetIdx,
+            itemIndex: i,
             ...(isRow
               ? {
-                  targetIdx,
                   size: colSize,
-                  itemIndex: i,
                   startFromIdx: pos.col + 1,
                 }
               : {
-                  targetIdx,
                   size: rowSize,
-                  itemIndex: i,
                   startFromIdx: pos.row + 1,
                 }),
           });
+
+          appendAfterIndex += 1;
         });
       }
     }

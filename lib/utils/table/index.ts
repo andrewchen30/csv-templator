@@ -84,19 +84,22 @@ export class TableOperator<CellType> {
     }
   }
 
-  public pushNewRow(row: CellType[]): number {
-    // TODO: fix unnecessary copy here, it should be controlled by the caller
-    this._rawTable.push(row.map((c) => (c ? { ...c } : null)));
+  public appendNewRowAfterTheIndex(row: CellType[], index: number): number {
+    this._rawTable.splice(
+      index + 1,
+      0,
+      row.map((c) => (c ? { ...c } : null)),
+    );
 
-    return this._rawTable.length - 1;
+    return index + 1;
   }
 
-  public pushNewCol(col: CellType[]): number {
+  public appendNewColAfterTheIndex(col: CellType[], index: number): number {
     this._rawTable.forEach((row, idx) => {
-      row.push(col[idx]);
+      row.splice(index + 1, 0, col[idx]);
     });
 
-    return this._rawTable[0].length - 1;
+    return index + 1;
   }
 
   public getCell(pos: CellPosition): CellType {
