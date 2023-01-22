@@ -41,10 +41,10 @@ npm i csv-templator
 
 ### Render CSV row by row
 
-| Purchase member data  |                          |         |
-| --------------------- | ------------------------ | ------- |
-|                       | "name"                   | "email" |
-| // for-row u in users | u.firstName + u.lastName | u.email |
+| Purchase member data   |                          |         |
+| ---------------------- | ------------------------ | ------- |
+|                        | "name"                   | "email" |
+| % for-row u in users % | u.firstName + u.lastName | u.email |
 
 Output:
 
@@ -60,8 +60,8 @@ DonetteFoller,donette.foller@cox.net
 <summary>Raw table string</summary>
 
 ```txt
-|                       | "name"                   | "email" |
-| // for-row u in users | u.firstName + u.lastName | u.email |
+|                        | "name"                   | "email" |
+| % for-row u in users % | u.firstName + u.lastName | u.email |
 ```
 
 </details>
@@ -70,9 +70,9 @@ DonetteFoller,donette.foller@cox.net
 
 | Email Domain in Each City |             |                                                                    |
 | ------------------------- | ----------- | ------------------------------------------------------------------ |
-|                           |             | // for-col domain in mailDomains                                   |
+|                           |             | % for-col domain in mailDomains                                    |
 |                           | "City Name" | domain                                                             |
-| // for-row c in cities    | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-' |
+| % for-row c in cities %   | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-' |
 
 Output:
 
@@ -88,9 +88,9 @@ Hamilton,-,-,-,1,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
 <summary>Raw table string</summary>
 
 ```txt
-|                           |             | // for-col domain in mailDomains                                   |
+|                           |             | % for-col domain in mailDomains                                   |
 |                           | "City Name" | domain                                                             |
-| // for-row c in cities    | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-' |
+| % for-row c in cities %   | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-' |
 ```
 
 </details>

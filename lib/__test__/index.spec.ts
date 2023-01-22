@@ -31,7 +31,7 @@ describe('CSV Templator', () => {
       {
         desc: 'should parse for-col',
         template: `
-          | // for-col item in list | 
+          | % for-col item in list % | 
           | item.name | 
           | item.name |
           | item.name |
@@ -40,18 +40,18 @@ describe('CSV Templator', () => {
       {
         desc: 'should parse for-row',
         template: `
-          | // for-row item in list | item.name | item.name | item.name |
+          | % for-row item in list % | item.name | item.name | item.name |
         `,
       },
       {
         desc: 'should parse extend-col and extend-row',
         template: `
 
-        | | // for-col item in list |
+        | | % for-col item in list % |
         | | item.name |
         | | item.name |
         | | item.name |
-        | // for-row item2 in list | item2[item.name] |
+        | % for-row item2 in list % | item2[item.name] |
       `,
       },
     ];
@@ -73,7 +73,7 @@ describe('CSV Templator', () => {
         desc: 'should successfully prepare data for render',
         template: `
         | | "name" | "age"
-        | // for-row user in users | user.name | user.age |
+        | % for-row user in users % | user.name | user.age |
       `,
         data: {
           users: [

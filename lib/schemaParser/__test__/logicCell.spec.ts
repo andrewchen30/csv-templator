@@ -11,7 +11,7 @@ describe('Logic/Parser', () => {
     {
       desc: 'should successfully parse for-col',
       input: {
-        raw: '// for-col sh in po.shipment',
+        raw: '% for-col sh in po.shipment %',
         pos: { row: 0, col: 0 },
       },
       expectLogicType: LogicCellType.forCol,
@@ -23,7 +23,7 @@ describe('Logic/Parser', () => {
     {
       desc: 'should successfully parse for-row',
       input: {
-        raw: '// for-row sh in po.shipment',
+        raw: '% for-row sh in po.shipment %',
         pos: { row: 2, col: 2 },
       },
       expectLogicType: LogicCellType.forRow,
@@ -35,7 +35,7 @@ describe('Logic/Parser', () => {
     {
       desc: 'should successfully extend-col',
       input: {
-        raw: '// extend-col',
+        raw: '% extend-col %',
         pos: { row: 2, col: 2 },
       },
       expectLogicType: LogicCellType.extendCol,
@@ -46,7 +46,7 @@ describe('Logic/Parser', () => {
     {
       desc: 'should successfully extend-row',
       input: {
-        raw: '// extend-row',
+        raw: '% extend-row %',
         pos: { row: 2, col: 2 },
       },
       expectLogicType: LogicCellType.extendRow,
@@ -76,7 +76,7 @@ describe('Logic/Parser', () => {
     {
       desc: 'using unknown for-XXX command pair',
       input: {
-        raw: '// for-col sh XXX po.shipment',
+        raw: '% for-col sh XXX po.shipment %',
         pos: { row: 2, col: 3 },
       },
       expectErrorMsg: '[2, 3] Invalid logic command for-XXX',
@@ -84,7 +84,7 @@ describe('Logic/Parser', () => {
     {
       desc: 'Using unknown command',
       input: {
-        raw: '// some-command',
+        raw: '% some-command %',
         pos: { row: 1, col: 2 },
       },
       expectErrorMsg: '[1, 2] Invalid logic command some-command',
