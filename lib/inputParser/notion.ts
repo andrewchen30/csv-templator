@@ -10,22 +10,20 @@ export default class NotionExtension implements Extension {
       .filter(Boolean)
       // remove table header structure in notion
       // | --- | --- | --- |
-      .filter((x) => !this.checkIsHeaderRow(x));
+      .filter((x) => !this.checkIsHeaderRow(x))
+      .map((row) =>
+        row
+          .split('|')
+          .filter(Boolean)
 
-    return new TableOperator(
-      rows
-        .map((row) =>
-          row
-            .split('|')
-            .filter(Boolean)
+          // notion table has an extra empty cell at the beginning
+          .slice(1)
 
-            // notion table has an extra empty cell at the beginning
-            .slice(1)
+          .map((str) => str.trim()),
+      )
+      .filter((cells) => cells.length >= 1);
 
-            .map((str) => str.trim()),
-        )
-        .filter((cells) => cells.length >= 1),
-    );
+    return new TableOperator(rows);
   }
 
   private checkIsHeaderRow(rawRowStr: string): boolean {
