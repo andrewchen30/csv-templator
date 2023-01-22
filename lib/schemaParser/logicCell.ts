@@ -3,7 +3,15 @@ import { LogicCellCtrl, LogicTypeByCommand } from '@/const';
 import { CellPosition, CellType, LogicCellSchema, LogicCellType } from '@/type';
 
 export function checkIsLogicCell(raw: string): boolean {
-  return raw.startsWith(LogicCellCtrl.left);
+  if (raw.startsWith(LogicCellCtrl.left) && raw.endsWith(LogicCellCtrl.right)) {
+    return true;
+  }
+
+  if (raw.startsWith(LogicCellCtrl.left)) {
+    throw new Error('Invalid logic cell: missing right ctrl');
+  }
+
+  return false;
 }
 
 export type GetLogicCellSchemaInput = {
@@ -28,7 +36,7 @@ export function parseLogicCellSchema({
     // commandArgs: [sh, i] in po.shipment
     case LogicCellType.forRow:
     case LogicCellType.forCol: {
-      const [loopArgs, _forLoopPair, targetArray] = commandArgs;
+      const [loopArgs, _forLoopPair, targetArray, suffix] = commandArgs;
 
       if (_forLoopPair !== 'in') {
         throw new Error(

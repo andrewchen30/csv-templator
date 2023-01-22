@@ -16,7 +16,7 @@ describe('scenario 1', () => {
       desc: 'should successfully render list',
       template: `
       |                       | "name"                   | "email" |
-      | // for-row u in users | u.firstName + u.lastName | u.email |
+      | % for-row u in users % | u.firstName + u.lastName | u.email |
     `,
       getData: () => ({
         users,
@@ -26,7 +26,7 @@ describe('scenario 1', () => {
       desc: 'should successfully render list',
       template: `
       |                        | "City Name" | "totalUser" | "Zip Codes"
-      | // for-row c in cities | c.name      | c.totalUser | c.zipCodes.join(' / ')
+      | % for-row c in cities % | c.name      | c.totalUser | c.zipCodes.join(' / ')
       
     `,
       getData: () => ({
@@ -42,9 +42,9 @@ describe('scenario 1', () => {
     {
       desc: 'should successfully render list',
       template: `
-      |                        |             | // for-col domain in mailDomains          |
+      |                        |             | % for-col domain in mailDomains %          |
       |                        | "City Name" | domain                                    | 
-      | // for-row c in cities | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-'  | 
+      | % for-row c in cities % | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-'  | 
       
     `,
       getData: () => {

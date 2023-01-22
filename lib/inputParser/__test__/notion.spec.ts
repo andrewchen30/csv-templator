@@ -9,13 +9,13 @@ describe('Notion Parser', () => {
     | --- | --- | --- |
     |  |  | orders.foreachCol(po) |
     |  | "Order Number” | po.orderNumber |
-    |  |  | // for-col [sh, i] in po.shipment  |
+    |  |  | % for-col [sh, i] in po.shipment  |
     |  | “Name” | sh.id |
     |  | “Status” | shipmentStatusDic[sh.status] |
     |  | “ETA” | format(sh.eta, ‘DD/MM/YYYY’) |
     |  | “ETD” | format(sh.etd, ‘DD/MM/YYYY’) |
     |  |  |  |
-    | // for-row (item in allOrderedSkus) | item.sku | sh.lineItemBySku[item.sku] ?? ‘-’ |
+    | % for-row (item in allOrderedSkus) | item.sku | sh.lineItemBySku[item.sku] ?? ‘-’ |
     `;
 
     expect(parser.parse(notionTable).toArray()).toMatchSnapshot();

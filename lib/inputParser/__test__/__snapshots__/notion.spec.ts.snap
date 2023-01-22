@@ -20,7 +20,7 @@ Array [
   Array [
     "",
     "",
-    "// for-col [sh, i] in po.shipment",
+    "% for-col [sh, i] in po.shipment",
   ],
   Array [
     "",
@@ -48,7 +48,7 @@ Array [
     "",
   ],
   Array [
-    "// for-row (item in allOrderedSkus)",
+    "% for-row (item in allOrderedSkus)",
     "item.sku",
     "sh.lineItemBySku[item.sku] ?? '-'",
   ],
