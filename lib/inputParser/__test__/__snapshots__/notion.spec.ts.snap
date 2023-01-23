@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Notion Parser should parse a Notion page 1`] = `
+exports[`InputParser/Notion should parse a Notion page 1`] = `
 Array [
   Array [
     "",

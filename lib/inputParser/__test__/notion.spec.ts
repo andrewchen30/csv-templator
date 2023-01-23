@@ -1,6 +1,6 @@
 import NotionParser from '../notion';
 
-describe('Notion Parser', () => {
+describe('InputParser/Notion', () => {
   const parser = new NotionParser();
 
   it('should parse a Notion page', async () => {
