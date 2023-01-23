@@ -1,9 +1,12 @@
+import { RendererCell } from '@/renderer/type';
 import {
   CellSchema,
   CellPosition,
   checkCellIsExtendLogic,
   checkCellIsForeachLogic,
   Schema,
+  DataCellSchema,
+  CellType,
 } from '@/type';
 import { TableOperator } from '.';
 
@@ -29,7 +32,6 @@ export function ingestDataByRowOrCol(
   table: TableOperator<any>,
   {
     itemName,
-    indexName = '_index',
     targetIdx,
     startFromIdx = 0,
     size,
@@ -55,7 +57,7 @@ export function ingestDataByRowOrCol(
       key,
       {
         [itemName]: value,
-        [indexName]: itemIndex,
+        [`_${itemName}_index`]: itemIndex,
       },
     );
   }
@@ -77,7 +79,12 @@ export function cloneRowOrColByIdx({
     ? table.getRowByIndex(targetIdx)
     : table.getColumnByIndex(targetIdx);
 
-  return toCloneRecord.map((c, i) => (i >= startFromIdx ? { ...c } : null));
+  return toCloneRecord.map((c, i) => {
+    if (i < startFromIdx || !c) {
+      return null;
+    }
+    return { ...c };
+  });
 }
 
 export function formatCSV(
@@ -107,4 +114,28 @@ export function formatCSV(
   }
 
   return r;
+}
+
+export function getNextDataCell(
+  table: TableOperator<any>,
+  { row, col }: CellPosition,
+  isRow: boolean,
+): RendererCell {
+  const pos = { row, col };
+
+  while (table.inRange(pos)) {
+    const cell = table.getCell(pos);
+
+    if (cell && cell.type === CellType.data) {
+      return cell;
+    }
+
+    if (isRow) {
+      pos.col += 1;
+    } else {
+      pos.row += 1;
+    }
+  }
+
+  return null;
 }

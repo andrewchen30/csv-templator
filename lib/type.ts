@@ -25,6 +25,9 @@ export type CellPosition = {
 
 export interface BaseCellSchema {
   _positionInTemplate: CellPosition;
+
+  // during the rendering the logic cells will hold the data filed for a while
+  data?: any;
 }
 
 export interface DataCellSchema extends BaseCellSchema {
@@ -40,9 +43,9 @@ interface BaseLogicCellSchema extends BaseCellSchema {
 export interface ForeachLogicCellSchema extends BaseLogicCellSchema {
   logicType: LogicCellType.forCol | LogicCellType.forRow;
 
-  // {listName}.foreach(({targetArray}) => ...)
+  // {listName}.foreach(({targetArrayPath}) => ...)
   // for loop target array variable name
-  targetArray: string;
+  targetArrayPath: string;
 
   // for loop internal item variable name
   // should be [item] or [item, index]

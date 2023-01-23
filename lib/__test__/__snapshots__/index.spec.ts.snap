@@ -194,12 +194,10 @@ Object {
 exports[`CSV Templator parse schema should parse extend-col and extend-row: _schema 1`] = `
 Object {
   "logicColIndexes": Set {
-    1,
     0,
   },
   "logicRowIndexes": Set {
     0,
-    4,
   },
   "schemaTable": TableOperator {
     "_rawTable": Array [
@@ -214,7 +212,7 @@ Object {
           "loopArgs": Array [
             "item",
           ],
-          "targetArray": "list",
+          "targetArrayPath": "list",
           "type": 0,
         },
       ],
@@ -273,7 +271,7 @@ Object {
           "loopArgs": Array [
             "item2",
           ],
-          "targetArray": "list",
+          "targetArrayPath": "list",
           "type": 0,
         },
         Object {
@@ -296,9 +294,7 @@ Object {
 
 exports[`CSV Templator parse schema should parse for-col: _schema 1`] = `
 Object {
-  "logicColIndexes": Set {
-    0,
-  },
+  "logicColIndexes": Set {},
   "logicRowIndexes": Set {
     0,
   },
@@ -314,10 +310,9 @@ Object {
           "loopArgs": Array [
             "item",
           ],
-          "targetArray": "list",
+          "targetArrayPath": "list",
           "type": 0,
         },
-        null,
       ],
       Array [
         Object {
@@ -332,7 +327,6 @@ Object {
           },
           "type": 1,
         },
-        null,
       ],
       Array [
         Object {
@@ -347,7 +341,6 @@ Object {
           },
           "type": 1,
         },
-        null,
       ],
       Array [
         Object {
@@ -362,7 +355,6 @@ Object {
           },
           "type": 1,
         },
-        null,
       ],
     ],
   },
@@ -374,9 +366,7 @@ Object {
   "logicColIndexes": Set {
     0,
   },
-  "logicRowIndexes": Set {
-    0,
-  },
+  "logicRowIndexes": Set {},
   "schemaTable": TableOperator {
     "_rawTable": Array [
       Array [
@@ -389,7 +379,7 @@ Object {
           "loopArgs": Array [
             "item",
           ],
-          "targetArray": "list",
+          "targetArrayPath": "list",
           "type": 0,
         },
         Object {
@@ -435,16 +425,28 @@ Object {
 `;
 
 exports[`CSV Templator render output should successfully hide the column age: _rawValue 1`] = `
-",,
-name,,
-Joanne,,
-Frank,,
+"null
+name
+Andrew
+Joanne
+Frank
 "
 `;
 
 exports[`CSV Templator render output should successfully prepare data for render: _rawValue 1`] = `
-"name,age,
-Joanne,28,
-Frank,22,
+"name,age
+Andrew,30
+Joanne,28
+Frank,22
+"
+`;
+
+exports[`CSV Templator render output should successfully render with numbers: _rawValue 1`] = `
+"name,phone
+Andrew,0930111111
+null,0930222222
+Joanne,0930333333
+null,0930444444
+Frank,0930555555
 "
 `;

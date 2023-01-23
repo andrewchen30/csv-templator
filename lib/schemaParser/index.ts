@@ -36,11 +36,11 @@ export function parseSchema(input: SchemaParserInput): SchemaParserOutput {
     schema.updateCell(pos, logicCellSchema);
 
     // mark logic row and col
-    if (
-      logicCellSchema.logicType === LogicCellType.forRow ||
-      logicCellSchema.logicType === LogicCellType.forCol
-    ) {
+    if (logicCellSchema.logicType === LogicCellType.forRow) {
       logicColIndexes.add(pos.col);
+    }
+
+    if (logicCellSchema.logicType === LogicCellType.forCol) {
       logicRowIndexes.add(pos.row);
     }
 

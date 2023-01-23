@@ -19,12 +19,11 @@ export type RendererCell = {
   };
 };
 
-export type Renderer = TableOperator<RendererCell>;
+export type Renderer = Schema['schemaTable'];
 
 export type RenderForLoopInput = {
   data: any;
   schema: Schema;
-  renderer: Renderer;
   logicCellType: LogicCellType.forCol | LogicCellType.forRow;
 };
 
