@@ -1,6 +1,6 @@
-import { CellPosition } from '@/type';
+import { CellPosition, CellType, DataCellSchema } from '@/type';
 import { renderOutputCell } from '..';
-import { RendererCell, RenderOptions } from '../type';
+import { RenderOptions } from '../type';
 
 // hide console.error for test cases
 console.error = jest.fn();
@@ -11,10 +11,16 @@ describe('render output', () => {
     col: 0,
   };
 
+  const mockCellBase = {
+    type: CellType.data,
+    renderPosition: { row: 0, col: 0 },
+    _positionInTemplate: { row: 0, col: 0 },
+  } as const;
+
   const plans: {
     desc: string;
     input: {
-      cell: RendererCell;
+      cell: DataCellSchema;
       pos: CellPosition;
       options?: RenderOptions;
     };
@@ -32,6 +38,7 @@ describe('render output', () => {
       desc: 'render string',
       input: {
         cell: {
+          ...mockCellBase,
           eval: '"hello"',
           data: {},
         },
@@ -43,6 +50,7 @@ describe('render output', () => {
       desc: 'render number',
       input: {
         cell: {
+          ...mockCellBase,
           eval: '1',
           data: {},
         },
@@ -54,6 +62,7 @@ describe('render output', () => {
       desc: 'render string from data',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'name',
           data: {
             name: 'Andrew',
@@ -68,6 +77,7 @@ describe('render output', () => {
       desc: 'render number from data',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'age',
           data: {
             name: 'Andrew',
@@ -82,6 +92,7 @@ describe('render output', () => {
       desc: 'handle undefined data key',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'phone',
           data: {
             name: 'Andrew',
@@ -96,6 +107,7 @@ describe('render output', () => {
       desc: 'handle undefined data',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'phone',
           data: {
             name: 'Andrew',
@@ -111,6 +123,7 @@ describe('render output', () => {
       desc: 'handle null data',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'phone',
           data: {
             name: 'Andrew',
@@ -126,6 +139,7 @@ describe('render output', () => {
       desc: 'handle custom NaN data',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'a / b',
           data: {
             a: 0,
@@ -144,6 +158,7 @@ describe('render output', () => {
       desc: 'handle custom undefined data',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'a.b',
           data: {
             a: {},
@@ -161,6 +176,7 @@ describe('render output', () => {
       desc: 'handle custom null data',
       input: {
         cell: {
+          ...mockCellBase,
           eval: 'a',
           data: {
             a: null,
