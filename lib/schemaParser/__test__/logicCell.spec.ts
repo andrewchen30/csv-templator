@@ -17,7 +17,7 @@ describe('Logic/Parser', () => {
       expectLogicType: LogicCellType.forCol,
       expectExtraOutput: {
         loopArgs: ['sh'],
-        targetArray: 'po.shipment',
+        targetArrayPath: 'po.shipment',
       },
     },
     {
@@ -29,7 +29,7 @@ describe('Logic/Parser', () => {
       expectLogicType: LogicCellType.forRow,
       expectExtraOutput: {
         loopArgs: ['sh'],
-        targetArray: 'po.shipment',
+        targetArrayPath: 'po.shipment',
       },
     },
     {

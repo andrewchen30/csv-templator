@@ -32,14 +32,17 @@ export class TableOperator<CellType> {
   }
 
   public scan(cb: ScannerCallback<CellType>, ignoreEmptyCell: boolean = true) {
-    this._rawTable.forEach((row, rowIndex) => {
-      row.forEach((cell, colIndex) => {
+    for (let ri = 0; ri < this._rawTable.length; ri++) {
+      const row = this._rawTable[ri];
+
+      for (let ci = 0; ci < row.length; ci++) {
+        const cell = this.getCell({ row: ri, col: ci });
         if (ignoreEmptyCell && !cell) {
-          return;
+          continue;
         }
-        cb(cell, { row: rowIndex, col: colIndex });
-      });
-    });
+        cb(cell, { row: ri, col: ci });
+      }
+    }
   }
 
   public scanByRow(
@@ -53,14 +56,15 @@ export class TableOperator<CellType> {
     cb: ScannerCallback<CellType>,
     ignoreEmptyCell: boolean = true,
   ) {
-    const [row, col] = this.getSize();
-    for (let i = 0; i < col; i++) {
-      for (let j = 0; j < row; j++) {
-        const cell = this.getCell({ row: j, col: i });
+    const [_, col] = this.getSize();
+
+    for (let ci = 0; ci < col; ci++) {
+      for (let ri = 0; ri < this._rawTable.length; ri++) {
+        const cell = this.getCell({ row: ri, col: ci });
         if (ignoreEmptyCell && !cell) {
           continue;
         }
-        cb(cell, { row: j, col: i });
+        cb(cell, { row: ri, col: ci });
       }
     }
   }
@@ -100,7 +104,6 @@ export class TableOperator<CellType> {
   // skip if cell is null
   public injectCellByKey(pos: CellPosition, key: string, value: any) {
     const prev = this.getCell(pos);
-
     if (prev) {
       this.updateCell(pos, {
         ...prev,
@@ -165,5 +168,10 @@ export class TableOperator<CellType> {
 
   public toArray() {
     return this._rawTable.map((row) => row.map((c) => c));
+  }
+
+  public inRange(pos: CellPosition): boolean {
+    const [row, col] = this.getSize();
+    return pos.row >= 0 && pos.row < row && pos.col >= 0 && pos.col < col;
   }
 }

@@ -23,7 +23,22 @@ export default class NotionExtension implements Extension {
       )
       .filter((cells) => cells.length >= 1);
 
-    return new TableOperator(rows);
+    const table = new TableOperator(rows);
+
+    // if all last cell is empty, remove the last column
+    const lastColIdx = rows[0].length - 1;
+    let isAllEmpty = true;
+    table.scanColByIndex(lastColIdx, (cell) => {
+      if (cell) {
+        isAllEmpty = false;
+      }
+    });
+
+    if (isAllEmpty) {
+      table.removeColByIndex(lastColIdx);
+    }
+
+    return table;
   }
 
   private checkIsHeaderRow(rawRowStr: string): boolean {

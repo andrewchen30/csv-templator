@@ -36,7 +36,7 @@ export function parseLogicCellSchema({
     // commandArgs: [sh, i] in po.shipment
     case LogicCellType.forRow:
     case LogicCellType.forCol: {
-      const [loopArgs, _forLoopPair, targetArray, suffix] = commandArgs;
+      const [loopArgs, _forLoopPair, targetArrayPath, suffix] = commandArgs;
 
       if (_forLoopPair !== 'in') {
         throw new Error(
@@ -46,7 +46,7 @@ export function parseLogicCellSchema({
 
       return {
         logicType,
-        targetArray,
+        targetArrayPath,
         type: CellType.logic,
         loopArgs: Array.isArray(loopArgs) ? loopArgs : [loopArgs],
         _positionInTemplate: pos,

@@ -72,7 +72,7 @@ describe('CSV Templator', () => {
       {
         desc: 'should successfully prepare data for render',
         template: `
-        |                           | "name"    | "age"    | 
+        |                           | "name"    | "age"    |
         | % for-row user in users % | user.name | user.age |
       `,
         data: {
@@ -86,8 +86,8 @@ describe('CSV Templator', () => {
       {
         desc: 'should successfully hide the column age',
         template: `
-        |                           |           | % visible-col showAge % | 
-        |                           | "name"    | "age"                   | 
+        |                           |           | % visible-col showAge % |
+        |                           | "name"    | "age"                   |
         | % for-row user in users % | user.name | user.age                |
       `,
         data: {
@@ -96,6 +96,20 @@ describe('CSV Templator', () => {
             { name: 'Andrew', age: 30 },
             { name: 'Joanne', age: 28 },
             { name: 'Frank', age: 22 },
+          ],
+        },
+      },
+      {
+        desc: 'should successfully render with numbers',
+        template: `
+        |                           | "name"    |                                  | "phone" | 
+        | % for-row user in users % | user.name | % for-row phone in user.phones % | phone   | 
+      `,
+        data: {
+          users: [
+            { name: 'Andrew', age: 30, phones: ['0930111111', '0930222222'] },
+            { name: 'Joanne', age: 28, phones: ['0930333333', '0930444444'] },
+            { name: 'Frank', age: 22, phones: ['0930555555'] },
           ],
         },
       },
