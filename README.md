@@ -9,7 +9,7 @@ At-a-glance CSV rendering
 
 ## How
 
-Use csv-templator to handle your rendering and adjustment logics, The output will be visible and predictable
+Use csv-templator to handle your rendering and adjustment logics. The output will be visible and predictable
 
 ```tsx
 const data = {
@@ -43,8 +43,8 @@ npm i csv-templator
 
 ## Concept
 
-- The whole template config by a markdown table, we manually write the template or copy from a table in Notion.
-- We can two types in the table `Data Cell` and `Logic Cell`. Data Cell is the cell we you render the CSV output. The Logic Cell always start and end with a `%`, we depends on logic cell to arrange data.
+- The whole template is config by a markdown table, we manually write the template or copy from a table in Notion.
+- We can see two types in the table `Data Cell` and `Logic Cell`. Data Cell is the cell we you render the CSV output. The Logic Cell always start and end with a `%`, we depends on logic cell to arrange data.
 
 Here is an example we used in the previous demo:
 
@@ -60,7 +60,7 @@ And here is the type of each cells:
 
 ## Data Cell
 
-Each cell is treated as a function of an independent force and can read the value of the first level of rendering argument. For example, the cell of `[user.name](http://user.name)` is actually works like the following function. The return of the following function will be the output of the CSV cell.
+Each cell is treated as a function of an independent force and can read the value of the first level of rendering argument. For example, the cell of `user.name` actually works like the following function. The following function's return will be the CSV cell output.
 
 ```tsx
 function(data) { // The data you gave during the templator.render(...)
@@ -89,13 +89,13 @@ function(data) { // The data you gave during the templator.render(...)
 
 ### `for-row` and `for-col`
 
-Arrange an array, csv-templator renderer will pass the item of array into the data cell render function. The same example we used in the first demo:
+Arrange an array, the csv-templator renderer will pass the item of an array into the data cell render function. The same example we used in the first demo:
 
 |                           | "name"    | "age"    |
 | ------------------------- | --------- | -------- |
 | % for-row user in users % | user.name | user.age |
 
-It will works like this:
+It will work like this:
 
 |                           | "name"        | "age"        |
 | ------------------------- | ------------- | ------------ |
@@ -105,7 +105,7 @@ It will works like this:
 
 ### `visible-row` and `visible-col`
 
-Defined the row or the column are visible based on a boolean, for example:
+Define the row or the column are visible based on a boolean:
 
 ```tsx
 const data = {
