@@ -1,96 +1,132 @@
 # CSV-Templator
 
-A easy CSV template render using 2D table to implement your own code logic
+At-a-glance CSV rendering
 
-## Pain point
+## Why
 
-- Coding of CSV importer/exporter is tedious.
-- Schemas of CSV importer/exporter are hard to read and maintain
-- Render(format) logic, data adjustment logic, and business logic all mix together
+- Exporting CSV programming always needs tons of for-loop or array operations. It’s cumbersome and hard to maintain.
+- In the CSV exporting code, render(format) logic, data adjustment logic, and business logic all mix together.
 
-## Quick Start
+## How
 
-```sh
+Use csv-templator to handle your rendering and adjustment logics, The output will be visible and predictable
+
+```tsx
+const data = {
+  users: [
+    { name: 'Andrew', age: 30 },
+    { name: 'Joanne', age: 28 },
+    { name: 'Frank', age: 22 },
+  ],
+};
+
+const templator = new CSVTemplator(`
+  |                           | "name"    | "age"    |
+  | % for-row user in users % | user.name | user.age |
+`);
+
+const csv = templator.render(data);
+```
+
+```
+name,age
+Andrew,30
+Joanne,28
+Frank,22
+```
+
+## Install
+
+```bash
 npm i csv-templator
 ```
 
-<details>
-<summary>Example data set</summary>
+## Concept
 
-```json
-[
-  {
-    "firstName": "James",
-    "lastName": "Butt",
-    "companyName": "Benton, John B Jr",
-    "address": "6649 N Blue Gum St",
-    "city": "New Orleans",
-    "county": "Orleans",
-    "state": "LA",
-    "zip": 70116,
-    "phone1": "504-621-8927",
-    "phone2": "504-845-1427",
-    "email": "jbutt@gmail.com",
-    "web": "http://www.bentonjohnbjr.com"
-  }
-  // ...
-]
+- The whole template config by a markdown table, we manually write the template or copy from a table in Notion.
+- We can two types in the table `Data Cell` and `Logic Cell`. Data Cell is the cell we you render the CSV output. The Logic Cell always start and end with a `%`, we depends on logic cell to arrange data.
+
+Here is an example we used in the previous demo:
+
+|                           | "name"    | "age"    |
+| ------------------------- | --------- | -------- |
+| % for-row user in users % | user.name | user.age |
+
+And here is the type of each cells:
+
+|              | (Data Cell) | (Data Cell) |
+| ------------ | ----------- | ----------- |
+| (Logic Cell) | (Data Cell) | (Data Cell) |
+
+## Data Cell
+
+Each cell is treated as a function of an independent force and can read the value of the first level of rendering argument. For example, the cell of `[user.name](http://user.name)` is actually works like the following function. The return of the following function will be the output of the CSV cell.
+
+```tsx
+function(data) { // The data you gave during the templator.render(...)
+   const {
+      users,    // the part of original data
+      user,     // inject by for-row
+   } = data;
+
+   return user.name // the data cell rendering command
+
+   // We can do some fancy operations here
+   // reutrn `My name is: ${user.name}`
+
+   // set default value for empty values
+   // return user.name || "unknown user name"
+
+   // or some calcualtions
+   // return user.age + 30
+}
 ```
 
-</details>
+## Logic Cell
 
-### Render CSV row by row
+- `for-row` and `for-col`
+- `visible-row` and `visible-col`
 
-| Purchase member data   |                          |         |
-| ---------------------- | ------------------------ | ------- |
-|                        | "name"                   | "email" |
-| % for-row u in users % | u.firstName + u.lastName | u.email |
+### `for-row` and `for-col`
 
-Output:
+Arrange an array, csv-templator renderer will pass the item of array into the data cell render function. The same example we used in the first demo:
 
-```csv
-name,email
-JosephineDarakjy,josephine_darakjy@darakjy.org
-ArtVenere,art@venere.org
-LennaPaprocki,lpaprocki@hotmail.com
-DonetteFoller,donette.foller@cox.net
+|                           | "name"    | "age"    |
+| ------------------------- | --------- | -------- |
+| % for-row user in users % | user.name | user.age |
+
+It will works like this:
+
+|                           | "name"        | "age"        |
+| ------------------------- | ------------- | ------------ |
+| % for-row user in users % | users[0].name | users[0].age |
+|                           | users[1].name | users[1].age |
+|                           | users[2].name | users[2].age |
+
+### `visible-row` and `visible-col`
+
+Defined the row or the column are visible based on a boolean, for example:
+
+```tsx
+const data = {
+  showAge: false,
+  users: [
+    { name: 'Andrew', age: 30 },
+    { name: 'Joanne', age: 28 },
+    { name: 'Frank', age: 22 },
+  ],
+};
+
+const templator = new CSVTemplator(`
+  |                           |           | % visible-col showAge % |
+  |                           | "name"    | "age"                   |
+  | % for-row user in users % | user.name | user.age                |
+`);
+
+const csv = templator.render(data);
+// csv:
+// "name
+// Andrew
+// Joanne
+// Frank"
 ```
-
-<details>
-<summary>Raw table string</summary>
-
-```txt
-|                        | "name"                   | "email" |
-| % for-row u in users % | u.firstName + u.lastName | u.email |
-```
-
-</details>
-
-### Dynamic columns
-
-| Email Domain in Each City |             |                                                                    |
-| ------------------------- | ----------- | ------------------------------------------------------------------ |
-|                           |             | % for-col domain in mailDomains                                    |
-|                           | "City Name" | domain                                                             |
-| % for-row c in cities %   | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-' |
-
-Output:
-
-```csv
-City Name,darakjy.org,venere.org,hotmail.com,cox.net,morasca.com,yahoo.com,aol.com,rim.org,royster.com,slusarski.com,caudy.org,chui.com,corrio.com,vocelka.com,glick.com,shinko.com,ostrosky.com,perin.org,saylors.org,briddick.com,bowley.org,uyetake.org,mastella.com,monarrez.org,vanausdal.org,hollack.org,lindall.com,yglesias.com,mondella.com,rhym.com,reitler.com,crupi.com,mulqueen.org,honeywell.com,dickerson.org,barfield.com,gato.org,centini.org,buemi.com,cronauer.com,felger.org,miceli.org,shin.com,schmierer.org,kulzer.org,palaspas.org,perez.org,shire.com,spickerman.com,mirafuentes.com,klimek.org,zane.com,kohnert.com,gellinger.com,frey.com,haroldson.org,craghead.org,parvis.com,deleo.com,degroot.org,hoa.org,cousey.org,degonia.org,cookey.org,poullion.com,melnyk.com,toyama.org,caiafa.org,pelkowski.org,emard.com,konopacki.org,silvestrini.com,gesick.org,lother.com,brossart.com,tegarden.com,gobern.org,saulter.com,malvin.com,suffield.org,fishburne.com,loader.com,burnard.com,setter.org,worlds.com,arias.org,dopico.org,hellickson.org,staback.com,fortino.com,engelberg.org,zurcher.org,denooyer.org,restrepo.com,sweigard.com,nicolozakes.org,pontoriero.com,aquas.com,regusters.com,hauenstein.org,brachle.org,canlas.com,lietz.com,vonasek.org,julia.org,loder.org,patak.org,beech.com,yaw.org,semidey.com,paa.com,dorshorst.org,daufeldt.com,scipione.com,kitty.com,schoeneck.org,newville.com,mccullan.com,walthall.org,berlanga.com,meteer.com,nayar.com,sarao.org,onofrio.com,angalich.com,lapage.com,villanueva.com,perruzza.com,galam.org,lipkin.com,grenet.org,mclaird.com,colaizzo.com,koppinger.com,dewar.com,arceo.org,chaffins.org,nunlee.org,chavous.org,jacobos.com,similton.com,ankeny.org,hixenbaugh.org,gillaspie.com,kampa.org
-Brighton,1,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
-Bridgeport,-,1,-,-,-,-,1,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
-Anchorage,-,-,1,1,-,-,1,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,1,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
-Hamilton,-,-,-,1,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
-```
-
-<details>
-<summary>Raw table string</summary>
-
-```txt
-|                           |             | % for-col domain in mailDomains                                   |
-|                           | "City Name" | domain                                                             |
-| % for-row c in cities %   | c.name      | c.groupedByDomain[domain] ? c.groupedByDomain[domain].length : '-' |
-```
-
-</details>
